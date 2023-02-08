@@ -21,7 +21,8 @@ def index():
 			"getTransactionsAmount": "/api/getTransactionsCount",
 			"getTransactions":       "/api/getTransactions",
 			"getTransaction":        "/api/getTransaction/<transaction_id>",
-			"uploadMT940File":       "/api/uploadMT940File"
+			"searchKeyword":         "/api/searchKeyword/<keyword>",
+			"uploadMT940File":       "/api/uploadFile"
 		}
 	}
 	return make_response(jsonify(answer), 200)
@@ -65,7 +66,12 @@ def get_transaction(transaction_id):
 	return make_response(json.loads(json_util.dumps(transaction)), 200)
 
 
-@app.route("/api/uploadMT940File", methods=["POST"])
+@app.route("/api/searchKeyword/<keyword>", methods=["GET"])
+def search_keyword(keyword):
+	pass
+
+
+@app.route("/api/uploadFile", methods=["POST"])
 def upload_file():
 	if "file" not in request.files:
 		return make_response(jsonify(error="No file part"), 400)
