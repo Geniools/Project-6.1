@@ -1,13 +1,13 @@
-from django.shortcuts import render
-from django.http import JsonResponse, HttpResponse, Http404, HttpResponseBadRequest, HttpResponseRedirect
-
-from . import transactions_collection
-from .utils import parse_mt940_file
-from .forms import UploadMT940Form
+import json
 
 from bson import json_util
 from bson.objectid import ObjectId
-import json
+from django.http import Http404, HttpResponse, JsonResponse
+from django.shortcuts import render
+
+from . import transactions_collection
+from .forms import UploadMT940Form
+from .utils import parse_mt940_file
 
 
 def index(request):
@@ -22,7 +22,7 @@ def index(request):
 			"uploadMT940File":       "/api/uploadFile"
 		}
 	}
-	return JsonResponse(answer, safe=False)
+	return JsonResponse(answer)
 
 
 def test(request):
@@ -66,14 +66,13 @@ def search_keyword(request, keyword: str):
 
 def upload_file(request):
 	if request.POST:
-		form = UploadMT940Form(request.POST)
+		form = UploadMT940Form(request.POST, request.FILES)
 		if form.is_valid():
-			file = request.files["file"]
-			# TODO: Test and parse the file
+			file = request.FILES["file"]
 			transaction = parse_mt940_file(file)
 			# Save the transaction to the database
 			transactions_collection.insert_one(transaction)
-			return JsonResponse(json.loads(json_util.dumps(transaction)), 200)
+			return JsonResponse(json.loads(json_util.dumps(transaction)))
 	else:
 		# If GET method or any other method called, return an empty form
 		form = UploadMT940Form()
