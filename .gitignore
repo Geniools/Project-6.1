@@ -1,5 +1,6 @@
 # Custom
 .idea
+test_mt940_files
 
 # Created by https://www.toptal.com/developers/gitignore/api/python,django,flask,intellij,pycharm
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,django,flask,intellij,pycharm
