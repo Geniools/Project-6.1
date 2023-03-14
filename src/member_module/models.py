@@ -11,4 +11,4 @@ class Member(models.Model):
 class LinkedTransaction(models.Model):
     id = models.IntegerField(primary_key=True, max_length=20)
     member_id=models.IntegerField(models.ForeignKey(Member, on_delete=models.DO_NOTHING),max_length=20)
-    transaction_bank_reference=models.CharField(max_length=30)
+    transaction_bank_reference=models.CharField(models.ForeignKey(base.app.Transaction, on_delete=DO_NOTHING),max_length=30)
