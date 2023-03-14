@@ -5,8 +5,8 @@ from django.db import models
 
 class Transaction(models.Model):
     bank_reference = models.CharField(max_length=30, null=False, primary_key=True)
-    file_id = models.ForeignKey("base_app.File", on_delete=models.DO_NOTHING, null=False)
-    balance_details_id = models.ForeignKey("base_app.File", on_delete=models.DO_NOTHING, null=False)
+    file_id = models.ForeignKey("base_app.File", on_delete=models.DO_NOTHING, null=False, related_name="file_id")
+    balance_details_id = models.ForeignKey("base_app.File", on_delete=models.DO_NOTHING, null=False, related_name="balance_details_id")
     category_id = models.ForeignKey("base_app.Category", on_delete=models.DO_NOTHING, null=False)
     customer_reference = models.CharField(max_length=30, null=False)
     entry_date = models.DateField(null=False)
@@ -18,7 +18,15 @@ class Transaction(models.Model):
 
 
 class File(models.Model):
-    pass
+    id = models.AutoField(null=False, primary_key=True)
+    available_closing_balance_id = models.ForeignKey("base_app.BalanceDetails", on_delete=models.DO_NOTHING, null=False, related_name="available_closing_balance_id")
+    final_closing_balance_id = models.ForeignKey("base_app.BalanceDetails", on_delete=models.DO_NOTHING, null=False, related_name="final_closing_balance_id")
+    final_opening_balance_id = models.ForeignKey("base_app.BalanceDetails", on_delete=models.DO_NOTHING, null=False, related_name="final_opening_balance_id")
+    final_available_balance_id = models.ForeignKey("base_app.BalanceDetails", on_delete=models.DO_NOTHING, null=False, related_name="final_available_balance_id")
+    account_identification = models.CharField(max_length=37, null=False)
+    sequence_number = models.CharField(max_length=255, null=True)
+    statement_number = models.CharField(max_length=255, null=True)
+    transaction_reference_nr = models.CharField(max_length=255, null=True)
 
 
 class CashTransaction(models.Model):
@@ -26,7 +34,7 @@ class CashTransaction(models.Model):
 
 
 class Category(models.Model):
-    id = models.AutoField(null=False, primary_key=False)
+    id = models.AutoField(null=False, primary_key=True)
     name = models.CharField(max_length=30, null=False)
 
 
@@ -40,7 +48,6 @@ class BalanceDetails(models.Model):
     amount = models.FloatField(null=False)
     currency_type = models.IntegerField(null=False)
     date = models.DateField(null=False)
-    status = models.CharField(null=True, max_length=1, choices=("c", "d"))
-# Unsure if capital C & D should be allowed or if a capital is mandatory
+    status = models.CharField(null=True, max_length=1, choices=(("C", "C"),("D", "D"),))
+# Unsure if choices are correct
 #
-# Start and finish the File models. Register models through admin file
