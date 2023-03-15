@@ -4,5 +4,11 @@ from .models import LinkedTransaction
 
 # Register your models here.
 
-admin.site.register(Member)
-admin.site.register(LinkedTransaction)
+@admin.register(Member)
+class MemberAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(LinkedTransaction)
+class MemberAdmin(admin.ModelAdmin):
+    pass
+
