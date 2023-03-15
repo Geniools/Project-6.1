@@ -9,6 +9,6 @@ class MemberAdmin(admin.ModelAdmin):
     pass
 
 @admin.register(LinkedTransaction)
-class MemberAdmin(admin.ModelAdmin):
+class LinkedTransaction(admin.ModelAdmin):
     pass
 
