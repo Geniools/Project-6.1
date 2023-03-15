@@ -152,7 +152,7 @@ JAZZMIN_SETTINGS = {
 	'site_title':            'Sports Accounting',
 	'site_header':           'Sports Accounting',
 	# 'site_logo':             '',
-	'site_brand':            'Sports Accounting Admin',
+	'site_brand':            'Sports Accounting',
 	"welcome_sign":          "Sports Accounting Admin Login Page",
 	"copyright":             "Quintor",
 	
@@ -171,6 +171,7 @@ JAZZMIN_SETTINGS = {
 	],
 	# Icons used for the admin apps (see https://fontawesome.com/v5/search)
 	"icons":                 {
+		"auth.Group":           "fas fa-users",
 		"main":                 "fas fa-users-cog",
 		"main.User":            "fas fa-user",
 		"base_app.Transaction": "fas fa-file-invoice",

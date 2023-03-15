@@ -2,35 +2,28 @@ import json
 
 from bson import json_util
 from bson.objectid import ObjectId
+
 from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import render
+from django.contrib import messages
 
 from . import transactions_collection
-from .forms import UploadMT940Form
-from .utils import parse_mt940_file
+from base_app.forms import UploadMT940Form
+from base_app.utils import MT940DBParser
 
 
 def index(request):
 	answer = {
-		"message": "Welcome to the SportsAccounting API",
+		"message": "SportsAccounting API",
 		"api":     {
-			"test":                  "/api/test",
-			"getTransactionsAmount": "/api/getTransactionsCount",
-			"getTransactions":       "/api/getTransactions",
-			"getTransaction":        "/api/getTransaction/<transaction_id>",
-			"searchKeyword":         "/api/searchKeyword/<keyword>",
-			"uploadMT940File":       "/api/uploadFile"
+			"Retrieve all transactions":                            "/api/transaction/",
+			"Get the total number of transactions in the NoSQL DB": "/api/transaction/count",
+			"Upload a file":                                        "/api/transaction/upload",
+			"Retrieve a specific transaction":                      "/api/transaction/<transaction_id>",
+			"Search for a keyword":                                 "/api/transaction/search/<keyword>"
 		}
 	}
 	return JsonResponse(answer)
-
-
-def test(request):
-	# Change the path to the file you want to test
-	# file_path = "D:\\Programming\\Python\\Project-6.1\\test_mt940_files\\test1.txt"
-	# transaction = parse_mt940_file(file_path)
-	# transactions_collection.insert_one(transaction)
-	return HttpResponse("I have to write a test here.")
 
 
 def get_transactions_count(request):
@@ -68,11 +61,20 @@ def upload_file(request):
 	if request.POST:
 		form = UploadMT940Form(request.POST, request.FILES)
 		if form.is_valid():
-			file = request.FILES["file"]
-			transaction = parse_mt940_file(file)
-			# Save the transaction to the database
-			transactions_collection.insert_one(transaction)
-			return JsonResponse(json.loads(json_util.dumps(transaction)))
+			files = request.FILES.getlist("file")
+			for file in files:
+				# Checking if the file is not too big (more than 2.5 MB)
+				if not file.multiple_chunks():
+					handler = MT940DBParser(file)
+					# Save to the NoSQL database
+					handler.save_to_nosql_db(transactions_collection)
+					# Save to the SQL database
+					# handler.save_to_sql_db()
+					# Add a success message
+					messages.success(request, f"File \"{file.name}\" uploaded successfully.")
+				else:
+					# Add an error message if the file is too big
+					messages.error(request, "The file is too big.")
 	else:
 		# If GET method or any other method called, return an empty form
 		form = UploadMT940Form()
