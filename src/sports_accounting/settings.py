@@ -13,14 +13,14 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 
 try:
-	from . import local_settings
+    from . import local_settings
 except ImportError:
-	with open('local_settings.py', 'w') as f:
-		f.write('')
-		raise ImportError(
-			'local_settings.py was not found. The file has been created for you to add your own settings. (You can '
-			'refer to the README.md file for more information.) '
-		)
+    with open('local_settings.py', 'w') as f:
+        f.write('')
+        raise ImportError(
+            'local_settings.py was not found. The file has been created for you to add your own settings. (You can '
+            'refer to the README.md file for more information.) '
+        )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,43 +39,45 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-	'base_app',
-	'main',
-	'jazzmin',
-	'django.contrib.admin',
-	'django.contrib.auth',
-	'django.contrib.contenttypes',
-	'django.contrib.sessions',
-	'django.contrib.messages',
-	'django.contrib.staticfiles',
+    'base_app',
+    'main',
+    'member_module',
+    'cash_module',
+    'jazzmin',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
 ]
 
 MIDDLEWARE = [
-	'django.middleware.security.SecurityMiddleware',
-	'django.contrib.sessions.middleware.SessionMiddleware',
-	'django.middleware.common.CommonMiddleware',
-	'django.middleware.csrf.CsrfViewMiddleware',
-	'django.contrib.auth.middleware.AuthenticationMiddleware',
-	'django.contrib.messages.middleware.MessageMiddleware',
-	'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'sports_accounting.urls'
 
 TEMPLATES = [
-	{
-		'BACKEND':  'django.template.backends.django.DjangoTemplates',
-		'DIRS':     [BASE_DIR / 'templates'],
-		'APP_DIRS': True,
-		'OPTIONS':  {
-			'context_processors': [
-				'django.template.context_processors.debug',
-				'django.template.context_processors.request',
-				'django.contrib.auth.context_processors.auth',
-				'django.contrib.messages.context_processors.messages',
-			],
-		},
-	},
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
 ]
 
 WSGI_APPLICATION = 'sports_accounting.wsgi.application'
@@ -84,17 +86,17 @@ WSGI_APPLICATION = 'sports_accounting.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-	'default': {
-		'ENGINE':   'django.db.backends.mysql',
-		'NAME':     local_settings.DB_NAME,  # change this to your database name (inside local_settings.py)
-		'USER':     local_settings.DB_USER,  # change this to your username (inside local_settings.py)
-		'PASSWORD': local_settings.DB_PASS,  # change this to your password (inside local_settings.py)
-		'HOST':     local_settings.DB_HOST,  # Or an IP Address that your DB is hosted on (inside local_settings.py)
-		'PORT':     local_settings.DB_PORT,  # change this port to your DB port (inside local_settings.py)
-		'OPTIONS':  {
-			'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-		}
-	}
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': local_settings.DB_NAME,  # change this to your database name (inside local_settings.py)
+        'USER': local_settings.DB_USER,  # change this to your username (inside local_settings.py)
+        'PASSWORD': local_settings.DB_PASS,  # change this to your password (inside local_settings.py)
+        'HOST': local_settings.DB_HOST,  # Or an IP Address that your DB is hosted on (inside local_settings.py)
+        'PORT': local_settings.DB_PORT,  # change this port to your DB port (inside local_settings.py)
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        }
+    }
 }
 
 # NoSQL DATABASE
@@ -104,18 +106,18 @@ MONGO_DB_URI = local_settings.MONGO_DB_URI
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-	{
-		'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-	},
-	{
-		'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-	},
-	{
-		'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-	},
-	{
-		'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-	},
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
 ]
 
 # Internationalization

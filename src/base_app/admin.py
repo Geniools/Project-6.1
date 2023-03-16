@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.contrib.admin import register
-
 from base_app.models import Transaction, File, Category, Currency, BalanceDetails
 
 
