@@ -1,13 +1,15 @@
 from django.db import models
 
 
-# Create your models here.
-
 class Member(models.Model):
     id = models.IntegerField(primary_key=True)
     firstName = models.CharField(max_length=20)
     lastName = models.CharField(max_length=20)
     email = models.CharField(max_length=20)
+
+    class Meta:
+        verbose_name = "Member"
+        verbose_name_plural = "Members"
 
     def __str__(self):
         return self.email
@@ -18,5 +20,9 @@ class LinkedTransaction(models.Model):
     member_id = models.ForeignKey(Member, on_delete=models.DO_NOTHING, max_length=20)
     transaction_bank_reference = models.ForeignKey("base_app.Transaction", on_delete=models.DO_NOTHING, max_length=30)
 
+    class Meta:
+        verbose_name = "Linked Transaction"
+        verbose_name_plural = "Linked Transactions"
+        
     def __str__(self):
         return self.id
