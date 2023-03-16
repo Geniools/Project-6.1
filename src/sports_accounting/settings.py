@@ -146,3 +146,43 @@ MEDIA_ROOT = local_settings.MEDIA_ROOT
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'main.User'
+
+# Jazzmin settings (UI used in the admin panel)
+JAZZMIN_SETTINGS = {
+	'site_title':            'Sports Accounting',
+	'site_header':           'Sports Accounting',
+	# 'site_logo':             '',
+	'site_brand':            'Sports Accounting',
+	"welcome_sign":          "Sports Accounting Admin Login Page",
+	"copyright":             "Quintor",
+	
+	"order_with_respect_to": ["auth", "Main", "Main.User", ],
+	"usermenu_links":        [
+		{"model": "auth.user"}
+	],
+	
+	"topmenu_links":         [
+		# Url that gets reversed (Permissions can be added)
+		{"name": "Dashboard", "url": "admin:index"},
+		# model admin to link to (Permissions checked against model)
+		{"model": "auth.User"},
+		{"name": "Reset Password", "url": "/admin/password_change/", "new_window": True},
+		{"name": "Main page", "url": "/", "new_window": True},
+	],
+	# Icons used for the admin apps (see https://fontawesome.com/v5/search)
+	"icons":                 {
+		"auth.Group":           "fas fa-users",
+		"main":                 "fas fa-users-cog",
+		"main.User":            "fas fa-user",
+		"base_app.Transaction": "fas fa-file-invoice",
+	},
+	# Use modals instead of popups
+	"related_modal_active":  False,  # Some browsers will block modals (firefox)
+	# Allows to edit UI in the admin panel (use only for development)
+	"show_ui_builder":       False,
+	# Relative paths to custom CSS/JS scripts (must be present in static files)
+	# "custom_css":            "",
+	# "custom_js":             "",
+}
