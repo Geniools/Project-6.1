@@ -16,7 +16,7 @@ class Member(models.Model):
 class LinkedTransaction(models.Model):
     id = models.IntegerField(primary_key=True)
     member_id = models.ForeignKey(Member, on_delete=models.DO_NOTHING, max_length=20)
-    transaction_bank_reference = models.ForeignKey(base_app.Transaction, on_delete=models.DO_NOTHING, max_length=30)
+    transaction_bank_reference = models.ForeignKey("base_app.Transaction", on_delete=models.DO_NOTHING, max_length=30)
 
     def __str__(self):
         return self.id
