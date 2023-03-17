@@ -1,34 +1,52 @@
 from django.contrib import admin
-from django.contrib.admin import register
-from base_app.models import Transaction, File, Category, Currency, BalanceDetails
+
+from base_app.models import Transaction, File, Category, BalanceDetails, Currency
 
 
-# Register your models here.
-
-@register(Transaction)
+@admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
-    def has_add_permission(self, request):
-        if request.user.is_superuser:
-            return True
+    list_display = ('entry_date', 'category_id')
 
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
         return False
 
 
-@register(File)
+@admin.register(File)
 class FileAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('transaction_id', 'account_identification')
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
 
 
-@register(Category)
+@admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name',)
 
 
-@register(Currency)
+@admin.register(Currency)
 class CurrencyAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name',)
 
 
-@register(BalanceDetails)
+@admin.register(BalanceDetails)
 class BalanceDetailsAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('amount', 'currency_type', 'date', 'status')
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False

@@ -1,14 +1,13 @@
 from django.contrib import admin
-from .models import Member
-from .models import LinkedTransaction
 
-# Register your models here.
+from member_module.models import Member, LinkedTransaction
+
 
 @admin.register(Member)
 class MemberAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('first_name', 'last_name', 'email')
+
 
 @admin.register(LinkedTransaction)
 class LinkedTransaction(admin.ModelAdmin):
-    pass
-
+    list_display = ('member_id', 'transaction_bank_reference')

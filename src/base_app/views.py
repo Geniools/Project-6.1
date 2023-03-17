@@ -59,16 +59,16 @@ def search_keyword(request, keyword: str):
 
 def upload_file(request):
     if request.POST:
+        # Feed the form with the POST data
         form = UploadMT940Form(request.POST, request.FILES)
         if form.is_valid():
+            # Get all the files from the form
             files = request.FILES.getlist("file")
             for file in files:
                 # Checking if the file is not too big (more than 2.5 MB)
                 if not file.multiple_chunks():
                     handler = MT940DBParser(file)
-                    # Save to the NoSQL database
                     handler.save_to_nosql_db(transactions_collection)
-                    # Save to the SQL database
                     # handler.save_to_sql_db()
                     # Add a success message
                     messages.success(request, f"File \"{file.name}\" uploaded successfully.")
