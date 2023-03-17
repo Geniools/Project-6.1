@@ -15,12 +15,12 @@ from . import transactions_collection
 def index(request):
     answer = {
         "message": "SportsAccounting API",
-        "api": {
-            "Retrieve all transactions": "/api/transaction/",
+        "api":     {
+            "Retrieve all transactions":                            "/api/transaction/",
             "Get the total number of transactions in the NoSQL DB": "/api/transaction/count",
-            "Upload a file": "/api/transaction/upload",
-            "Retrieve a specific transaction": "/api/transaction/<transaction_id>",
-            "Search for a keyword": "/api/transaction/search/<keyword>"
+            "Upload a file":                                        "/api/transaction/upload",
+            "Retrieve a specific transaction":                      "/api/transaction/<transaction_id>",
+            "Search for a keyword":                                 "/api/transaction/search/<keyword>"
         }
     }
     return JsonResponse(answer)
@@ -68,8 +68,8 @@ def upload_file(request):
                 # Checking if the file is not too big (more than 2.5 MB)
                 if not file.multiple_chunks():
                     handler = MT940DBParser(file)
-                    handler.save_to_nosql_db(transactions_collection)
-                    # handler.save_to_sql_db()
+                    # handler.save_to_nosql_db(transactions_collection)
+                    handler.save_to_sql_db()
                     # Add a success message
                     messages.success(request, f"File \"{file.name}\" uploaded successfully.")
                 else:
