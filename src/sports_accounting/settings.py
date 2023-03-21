@@ -13,14 +13,14 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 
 try:
-    from . import local_settings
+	from . import local_settings
 except ImportError:
-    with open('sports_accounting/local_settings.py', 'w') as f:
-        f.write('')
-        raise ImportError(
-            'local_settings.py was not found. The file has been created for you to added to your own settings. '
-            '(You can refer to the README.md file for more information.)'
-        )
+	with open('sports_accounting/local_settings.py', 'w') as f:
+		f.write('')
+		raise ImportError(
+			'local_settings.py was not found. The file has been created for you to added to your own settings. '
+			'(You can refer to the README.md file for more information.)'
+		)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,45 +39,45 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'base_app',
-    'main',
-    'member_module',
-    'cash_module',
-    'jazzmin',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+	'base_app',
+	'main',
+	'member_module',
+	'cash_module',
+	'jazzmin',
+	'django.contrib.admin',
+	'django.contrib.auth',
+	'django.contrib.contenttypes',
+	'django.contrib.sessions',
+	'django.contrib.messages',
+	'django.contrib.staticfiles',
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	'django.middleware.security.SecurityMiddleware',
+	'django.contrib.sessions.middleware.SessionMiddleware',
+	'django.middleware.common.CommonMiddleware',
+	'django.middleware.csrf.CsrfViewMiddleware',
+	'django.contrib.auth.middleware.AuthenticationMiddleware',
+	'django.contrib.messages.middleware.MessageMiddleware',
+	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'sports_accounting.urls'
 
 TEMPLATES = [
-    {
-        'BACKEND':  'django.template.backends.django.DjangoTemplates',
-        'DIRS':     [BASE_DIR / 'templates'],
-        'APP_DIRS': True,
-        'OPTIONS':  {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
+	{
+		'BACKEND':  'django.template.backends.django.DjangoTemplates',
+		'DIRS':     [BASE_DIR / 'templates'],
+		'APP_DIRS': True,
+		'OPTIONS':  {
+			'context_processors': [
+				'django.template.context_processors.debug',
+				'django.template.context_processors.request',
+				'django.contrib.auth.context_processors.auth',
+				'django.contrib.messages.context_processors.messages',
+			],
+		},
+	},
 ]
 
 WSGI_APPLICATION = 'sports_accounting.wsgi.application'
@@ -86,17 +86,17 @@ WSGI_APPLICATION = 'sports_accounting.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE':   'django.db.backends.mysql',
-        'NAME':     local_settings.DB_NAME,  # change this to your database name (inside local_settings.py)
-        'USER':     local_settings.DB_USER,  # change this to your username (inside local_settings.py)
-        'PASSWORD': local_settings.DB_PASS,  # change this to your password (inside local_settings.py)
-        'HOST':     local_settings.DB_HOST,  # Or an IP Address that your DB is hosted on (inside local_settings.py)
-        'PORT':     local_settings.DB_PORT,  # change this port to your DB port (inside local_settings.py)
-        'OPTIONS':  {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-        }
-    }
+	'default': {
+		'ENGINE':   'django.db.backends.mysql',
+		'NAME':     local_settings.DB_NAME,  # change this to your database name (inside local_settings.py)
+		'USER':     local_settings.DB_USER,  # change this to your username (inside local_settings.py)
+		'PASSWORD': local_settings.DB_PASS,  # change this to your password (inside local_settings.py)
+		'HOST':     local_settings.DB_HOST,  # Or an IP Address that your DB is hosted on (inside local_settings.py)
+		'PORT':     local_settings.DB_PORT,  # change this port to your DB port (inside local_settings.py)
+		'OPTIONS':  {
+			'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+		}
+	}
 }
 
 # NoSQL DATABASE
@@ -106,18 +106,18 @@ MONGO_DB_URI = local_settings.MONGO_DB_URI
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+	{
+		'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+	},
+	{
+		'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+	},
+	{
+		'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+	},
+	{
+		'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+	},
 ]
 
 # Internationalization
@@ -142,6 +142,9 @@ STATIC_ROOT = local_settings.STATIC_ROOT
 # Media files folder
 MEDIA_ROOT = local_settings.MEDIA_ROOT
 
+# Static folders to be used
+STATICFILES_DIRS = local_settings.STATICFILES_DIRS
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
@@ -151,45 +154,43 @@ AUTH_USER_MODEL = 'main.User'
 
 # Jazzmin settings (UI used in the admin panel)
 JAZZMIN_SETTINGS = {
-    'site_title':            'Sports Accounting',
-    'site_header':           'Sports Accounting',
-    # 'site_logo':             '',
-    'site_brand':            'Sports Accounting',
-    "welcome_sign":          "Sports Accounting Admin Login Page",
-    "copyright":             "Quintor",
-
-    "order_with_respect_to": ["auth", "Main", "Main.User", ],
-    "usermenu_links":        [
-        {"model": "auth.user"}
-    ],
-
-    "topmenu_links":         [
-        # Url that gets reversed (Permissions can be added)
-        {"name": "Dashboard", "url": "admin:index"},
-        # model admin to link to (Permissions checked against model)
-        {"model": "auth.User"},
-        {"name": "Reset Password", "url": "/admin/password_change/", "new_window": True},
-        {"name": "Main page", "url": "/", "new_window": True},
-    ],
-    # Icons used for the admin apps (see https://fontawesome.com/v5/search)
-    "icons":                 {
-        "auth.Group":                      "fas fa-users",
-        "main":                            "fas fa-users-cog",
-        "main.User":                       "fas fa-user",
-        "base_app.Transaction":            "fas fa-file-invoice",
-        "base_app.File":                   "fas fa-file",
-        "base_app.Currency":               "fas fa-euro-sign",
-        "base_app.Category":               "fas fa-list",
-        "base_app.BalanceDetails":         "fas fa-money-check-alt",
-        "cash_module.CashTransaction":     "fas fa-money-bill-wave",
-        "member_module.Member":            "fas fa-user-friends",
-        "member_module.LinkedTransaction": "fas fa-link",
-    },
-    # Use modals instead of popups
-    "related_modal_active":  False,  # Some browsers will block modals (firefox)
-    # Allows to edit UI in the admin panel (use only for development)
-    "show_ui_builder":       False,
-    # Relative paths to custom CSS/JS scripts (must be present in static files)
-    # "custom_css":            "",
-    # "custom_js":             "",
+	'site_title':            'Sports Accounting',
+	'site_header':           'Sports Accounting',
+	'site_logo':             'assets/quintor-logo-square.png',
+	'site_brand':            'Sports Accounting',
+	"welcome_sign":          "Sports Accounting Admin Login Page",
+	"copyright":             "Quintor",
+	"order_with_respect_to": ["auth", "Main", "Main.User", ],
+	"usermenu_links":        [
+		{"model": "auth.user"}
+	],
+	"topmenu_links":         [
+		# Url that gets reversed (Permissions can be added)
+		{"name": "Dashboard", "url": "admin:index"},
+		# model admin to link to (Permissions checked against model)
+		{"model": "auth.User"},
+		{"name": "Reset Password", "url": "/admin/password_change/", "new_window": True},
+		{"name": "Main page", "url": "/", "new_window": True},
+	],
+	# Icons used for the admin apps (see https://fontawesome.com/v5/search)
+	"icons":                 {
+		"auth.Group":                      "fas fa-users",
+		"main":                            "fas fa-users-cog",
+		"main.User":                       "fas fa-user",
+		"base_app.Transaction":            "fas fa-file-invoice",
+		"base_app.File":                   "fas fa-file",
+		"base_app.Currency":               "fas fa-euro-sign",
+		"base_app.Category":               "fas fa-list",
+		"base_app.BalanceDetails":         "fas fa-money-check-alt",
+		"cash_module.CashTransaction":     "fas fa-money-bill-wave",
+		"member_module.Member":            "fas fa-user-friends",
+		"member_module.LinkedTransaction": "fas fa-link",
+	},
+	# Use modals instead of popups
+	"related_modal_active":  False,  # Some browsers will block modals (firefox)
+	# Allows to edit UI in the admin panel (use only for development)
+	"show_ui_builder":       False,
+	# Relative paths to custom CSS/JS scripts (must be present in static files)
+	# "custom_css":            "",
+	# "custom_js":             "",
 }
