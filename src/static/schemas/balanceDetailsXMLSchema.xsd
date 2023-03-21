@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="balanceDetails">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:positiveInteger"/>
+                <xs:element name="amount" type="xs:float"/>
+                <xs:element name="currency_type_id" type="xs:positiveInteger"/>
+                <xs:element name="date" type="xs:date"/>
+                <xs:element name="status" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
