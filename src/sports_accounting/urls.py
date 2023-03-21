@@ -18,9 +18,11 @@ from django.urls import path, include
 
 from main import urls as main_urls
 from base_app import urls as base_app_urls
+from member_module import urls as member_module_urls
 
 urlpatterns = [
 	path('admin/', admin.site.urls),
 	path('', include(main_urls)),
 	path('api/', include(base_app_urls)),
+	path('member/', include(member_module_urls)),
 ]
