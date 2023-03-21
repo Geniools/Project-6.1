@@ -10,7 +10,12 @@ from django.contrib import messages
 from base_app.forms import UploadMT940Form
 from base_app.utils import MT940DBParser
 from . import transactions_collection
+from .models import Transaction, File, Category, Currency, BalanceDetails
 
+#JSON Test is made with the intention of getting the entries from the db as JSON format
+def jsonTest(request):
+    data = list(BalanceDetails.objects.values())
+    return JsonResponse(data, safe=False)
 
 def index(request):
     answer = {

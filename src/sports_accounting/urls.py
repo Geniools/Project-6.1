@@ -21,12 +21,14 @@ from django.conf.urls.static import static
 from main import urls as main_urls
 from base_app import urls as base_app_urls
 from member_module import urls as member_module_urls
+from cash_module import urls as cash_module_urls
 
 urlpatterns = [
 	path('admin/', admin.site.urls),
 	path('', include(main_urls)),
 	path('api/', include(base_app_urls)),
 	path('member/', include(member_module_urls)),
+	path('cash/', include(cash_module_urls)),
 ]
 
 # In production, serve static files with a web server like Nginx or Apache
