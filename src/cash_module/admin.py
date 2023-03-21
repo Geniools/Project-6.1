@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from cash_module.models import CashTransaction
+
+
+@admin.register(CashTransaction)
+class CashTransactionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'source', 'target')
