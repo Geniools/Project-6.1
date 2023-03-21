@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 from main import urls as main_urls
 from base_app import urls as base_app_urls
@@ -24,3 +26,8 @@ urlpatterns = [
 	path('', include(main_urls)),
 	path('api/', include(base_app_urls)),
 ]
+
+# In production, serve static files with a web server like Nginx or Apache
+# The following approach is only for development
+if settings.DEBUG:
+	urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
