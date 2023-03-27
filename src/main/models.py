@@ -4,39 +4,84 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
     id = models.AutoField(primary_key=True)
-    username = models.CharField(max_length=50, unique=True)
+    username = models.CharField(max_length=50, unique=True, help_text="Unique username for the user. Is used to log in.")
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField(max_length=80, verbose_name="Email address")
     password = models.CharField(max_length=255)
     is_superuser = models.BooleanField(default=False, help_text="Designates that this user has all permissions without explicitly assigning them.")
     is_staff = models.BooleanField(default=True, help_text="Designates whether the user can log into this admin site.")
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True, help_text="Designates whether this user should be treated as active. Unselect this instead of deleting accounts.")
+    is_treasurer = models.BooleanField(default=False, help_text="Designates whether the user can upload a transaction (MT940 file).")
+    user_permissions = models.ManyToManyField('auth.Permission', blank=True, help_text="Specific permissions for this user.")
+    groups = models.ManyToManyField('auth.Group', blank=True, help_text="The groups this user belongs to. A user will get all permissions granted to each of their groups.")
     last_login = models.DateTimeField(auto_now=True)
     date_joined = models.DateTimeField(auto_now_add=True)
-
+    
     USERNAME_FIELD = 'username'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
-
+    
     class Meta:
         verbose_name = "User"
         verbose_name_plural = "Users"
         db_table = "User"
-
+    
     def __str__(self):
         return f"{self.username}"
-
+    
+    def save(self, *args, **kwargs):
+        # A superuser has the permission of a treasurer
+        if self.is_superuser:
+            self.is_treasurer = True
+        super().save(*args, **kwargs)
+    
     def get_full_name(self):
         return f"{self.first_name} {self.last_name}"
-
+    
     def get_short_name(self):
         return f"{self.first_name[0]}. {self.last_name}"
-
-    # Defines the permissions that every user has
+    
     def has_perm(self, perm, obj=None):
-        # Every user has the permission to view and change users (permissions are defined in the admin.py file)
+        # The following permissions are always applied for every user (more detailed permissions are defined in the admin.py file)
+        # Every user has the permission to view and change users
         if perm in ('main.change_user', 'main.view_user'):
             return True
-
+        
+        # Every user has the permission to view and change transactions
+        if perm in ('base_app.change_transaction', 'base_app.view_transaction'):
+            return True
+        
+        # Every user has the permission to view files (MT940 files)
+        if perm in ('base_app.view_file',):
+            return True
+        
+        # Every user has the permission to view and change balance details
+        if perm in ('base_app.view_balancedetails', 'base_app.add_balancedetails'):
+            return True
+        
+        # Every user has the permission to view balance details
+        if perm in ('base_app.view_category', 'base_app.add_category'):
+            return True
+        
+        # Every user has the permission to view currencies
+        if perm in ('base_app.view_currency', 'base_app.add_currency'):
+            return True
+        
+        if perm in ('member_module.view_member', 'member_module.change_member', 'member_module.add_member'):
+            return True
+        
+        if perm in ('member_module.view_linkedtransaction', 'member_module.change_linkedtransaction', 'member_module.add_linkedtransaction'):
+            return True
+        
+        if perm in ('cash_module.view_cashtransaction', 'cash_module.change_cashtransaction', 'cash_module.add_cashtransaction'):
+            return True
+        
         return super().has_perm(perm, obj)
+    
+    def has_module_perms(self, app_label):
+        # Gives every user access to the following apps
+        if app_label in ('base_app', 'member_module', 'cash_module'):
+            return True
+        
+        return super().has_module_perms(app_label)

@@ -4,6 +4,8 @@ from bson import json_util
 from bson.objectid import ObjectId
 
 from django.http import Http404, HttpResponse, JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from django.contrib import messages
 
@@ -35,20 +37,20 @@ def get_transactions_count(request):
 
 def get_transactions(request):
     all_transactions = []
-
+    
     for transaction in transactions_collection.find():
         # print(transaction)
         all_transactions.append(transaction)
-
+    
     return JsonResponse(json.loads(json_util.dumps(all_transactions)), safe=False)
 
 
 def get_transaction(request, transaction_id: str):
     transaction = transactions_collection.find_one({"_id": ObjectId(transaction_id)})
-
+    
     if not transaction:
         return Http404("Transaction not found")
-
+    
     return JsonResponse(json.loads(json_util.dumps(transaction)))
 
 
@@ -57,7 +59,12 @@ def search_keyword(request, keyword: str):
     return HttpResponse(f"The keyword that this app must search for is: <b>{keyword}</b>")
 
 
+@login_required
 def upload_file(request):
+    # Check if the user is a treasurer or a superuser
+    if not request.user.is_treasurer and not request.user.is_superuser:
+        raise PermissionDenied("You are not authorized to view this page.")
+    
     if request.POST:
         # Feed the form with the POST data
         form = UploadMT940Form(request.POST, request.FILES)
@@ -68,7 +75,7 @@ def upload_file(request):
                 # Checking if the file is not too big (more than 2.5 MB)
                 if not file.multiple_chunks():
                     handler = MT940DBParser(file)
-                    # handler.save_to_nosql_db(transactions_collection)
+                    handler.save_to_nosql_db(transactions_collection)
                     handler.save_to_sql_db()
                     # Add a success message
                     messages.success(request, f"File \"{file.name}\" uploaded successfully.")
@@ -78,5 +85,5 @@ def upload_file(request):
     else:
         # If GET method or any other method called, return an empty form
         form = UploadMT940Form()
-
+    
     return render(request, "base_app/upload_transaction.html", {"form": form})
