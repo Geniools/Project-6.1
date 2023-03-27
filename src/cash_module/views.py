@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 from .models import CashTransaction
-from .schemas import CashTSerializer
+from .serializers import CashTSerializer
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 import io

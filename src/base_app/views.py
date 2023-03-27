@@ -13,7 +13,7 @@ from . import transactions_collection
 from .models import Transaction, File, Category, Currency, BalanceDetails
 from django.shortcuts import render
 from django.core import serializers
-from .schemas import TransactionSerializer, FileSerializer, CategorySerializer, CurrencySerializer, BalanceDSerializer
+from .serializers import TransactionSerializer, FileSerializer, CategorySerializer, CurrencySerializer, BalanceDSerializer
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 import io
