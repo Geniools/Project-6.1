@@ -11,16 +11,18 @@ from base_app.forms import UploadMT940Form
 from base_app.utils import MT940DBParser
 from . import transactions_collection
 
+import mysql.connector
+
 
 def index(request):
     answer = {
         "message": "SportsAccounting API",
-        "api":     {
-            "Retrieve all transactions":                            "/api/transaction/",
+        "api": {
+            "Retrieve all transactions": "/api/transaction/",
             "Get the total number of transactions in the NoSQL DB": "/api/transaction/count",
-            "Upload a file":                                        "/api/transaction/upload",
-            "Retrieve a specific transaction":                      "/api/transaction/<transaction_id>",
-            "Search for a keyword":                                 "/api/transaction/search/<keyword>"
+            "Upload a file": "/api/transaction/upload",
+            "Retrieve a specific transaction": "/api/transaction/<transaction_id>",
+            "Search for a keyword": "/api/transaction/search/<keyword>"
         }
     }
     return JsonResponse(answer)
@@ -53,8 +55,26 @@ def get_transaction(request, transaction_id: str):
 
 
 def search_keyword(request, keyword: str):
-    # TODO: implement functionality to search for keyword within transactions
-    return HttpResponse(f"The keyword that this app must search for is: <b>{keyword}</b>")
+    conn = mysql.connector.connect(host="localhost", user="root", password="", database="sports_accounting")
+    cursor = conn.cursor()
+
+    # Ignore the next bit, needs to be made into a stored procedure
+
+    query = (
+        "SELECT * FROM transaction WHERE id LIKE %s% OR bank_reference LIKE %s% OR customer_reference LIKE %s% "
+        "OR entry_date LIKE %s% OR guessed_entry_date LIKE %s% OR transaction_details LIKE %s% "
+        "OR extra_details LIKE %s% OR funds_code LIKE %s% OR balance_details_id_id LIKE %s% OR category_id_id LIKE %s% "
+        "OR file_id_id LIKE %s%"
+    )
+    cursor.execute(query,
+                   (keyword, keyword, keyword, keyword, keyword, keyword, keyword, keyword, keyword, keyword, keyword))
+    results = cursor.fetchall()
+    conn.close()
+
+    if not cursor.execute():
+        return HttpResponse(f"The keyword that this app must search for is: <b>{keyword}</b>")
+    else:
+        return results
 
 
 def upload_file(request):
