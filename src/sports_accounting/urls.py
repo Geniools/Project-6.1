@@ -21,6 +21,7 @@ from django.contrib.auth import views as auth_views
 
 from main import urls as main_urls
 from base_app import urls as base_app_urls
+from base_app.views import upload_file
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,6 +29,7 @@ urlpatterns = [
     path('api/', include(base_app_urls)),
     path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
     path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path("upload/", upload_file, name="transaction_upload"),
     path('', include(main_urls)),
 ]
 

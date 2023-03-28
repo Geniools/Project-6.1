@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "array",
+  "items": [
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "available_balance_id_id": {
+          "type": "integer"
+        },
+        "final_closing_balance_id_id": {
+          "type": "integer"
+        },
+        "final_opening_balance_id_id": {
+          "type": "integer"
+        },
+        "forward_available_balance_id_id": {
+          "type": "integer"
+        },
+        "account_identification": {
+          "type": "string"
+        },
+        "sequence_number": {
+          "type": "null"
+        },
+        "statement_number": {
+          "type": "string"
+        },
+        "transaction_reference_nr": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "available_balance_id_id",
+        "final_closing_balance_id_id",
+        "final_opening_balance_id_id",
+        "forward_available_balance_id_id",
+        "account_identification",
+        "sequence_number",
+        "statement_number",
+        "transaction_reference_nr"
+      ]
+    }
+  ]
+}
