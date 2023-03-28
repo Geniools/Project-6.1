@@ -21,15 +21,22 @@ from django.contrib.auth import views as auth_views
 
 from main import urls as main_urls
 from base_app import urls as base_app_urls
+from cash_module import urls as cash_module_urls
+from member_module import urls as member_module_urls
+
 from base_app.views import upload_file
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('api/', include(base_app_urls)),
     path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
     path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path("upload/", upload_file, name="transaction_upload"),
+    # API (rest_framework)
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api/', include(base_app_urls)),
+    path('api/', include(cash_module_urls)),
+    path('api/', include(member_module_urls)),
+    # "Normal" views
+    path("mt940/upload/", upload_file, name="transaction_upload"),
     path('', include(main_urls)),
 ]
 

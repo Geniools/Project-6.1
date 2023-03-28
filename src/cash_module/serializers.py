@@ -1,8 +1,9 @@
 from rest_framework import serializers
-from .models import CashTransaction
+
+from cash_module.models import CashTransaction
 
 
-class CashTSerializer(serializers.ModelSerializer):
+class CashTransactionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = CashTransaction
         fields = ['id', 'balance_details_id', 'source', 'target']

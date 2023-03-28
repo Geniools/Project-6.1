@@ -1,6 +1,12 @@
-from django.urls import path
-from member_module.views import jsonTest
+from django.urls import path, include
+from rest_framework import routers
+
+from member_module import api_views as views
+
+router = routers.DefaultRouter()
+router.register(r'member', views.MemberViewSet)
+router.register(r'linked-member-transaction', views.LinkedTransactionViewSet)
 
 urlpatterns = [
-    path("test/", jsonTest, name="test"),
+    path("", include(router.urls)),
 ]
