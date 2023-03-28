@@ -25,7 +25,10 @@ class TransactionAdmin(admin.ModelAdmin):
     list_filter = ('file_id', 'entry_date', 'category_id')
     search_fields = ('file_id', 'entry_date', 'category_id', 'transaction_details', 'extra_details', 'custom_description')
     # Every field is readonly, except for category_id and custom_description (as they should be manually changed)
-    readonly_fields = ('bank_reference', 'file_id', 'balance_details_id', 'customer_reference', 'entry_date', 'guessed_entry_date', 'id', 'transaction_details', 'extra_details', 'funds_code')
+    readonly_fields = (
+        'bank_reference', 'file_id', 'balance_details_id', 'customer_reference', 'entry_date', 'guessed_entry_date', 'transaction_identification_code',
+        'transaction_details', 'extra_details', 'funds_code'
+    )
     
     def has_add_permission(self, request):
         return False
@@ -67,5 +70,5 @@ class BalanceDetailsAdmin(admin.ModelAdmin):
     def has_change_permission(self, request, obj=None):
         return False
     
-    def has_delete_permission(self, request, obj=None):
+    def has_add_permission(self, request):
         return False

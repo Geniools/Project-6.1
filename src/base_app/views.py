@@ -74,14 +74,18 @@ def upload_file(request):
             for file in files:
                 # Checking if the file is not too big (more than 2.5 MB)
                 if not file.multiple_chunks():
-                    handler = MT940DBParser(file)
-                    handler.save_to_nosql_db(transactions_collection)
-                    handler.save_to_sql_db()
-                    # Add a success message
-                    messages.success(request, f"File \"{file.name}\" uploaded successfully.")
+                    try:
+                        handler = MT940DBParser(file)
+                        handler.save_to_sql_db()
+                        handler.save_to_nosql_db(transactions_collection)
+                        # Add a success message
+                        messages.success(request, f"File \"{file.name}\" uploaded successfully.")
+                    except Exception as e:
+                        # Add an error message if something goes wrong
+                        messages.error(request, f"File \"{file.name}\" could not be uploaded. Error: {e}")
                 else:
                     # Add an error message if the file is too big
-                    messages.error(request, "The file is too big.")
+                    messages.error(request, f"File \"{file.name}\" is too big.")
     else:
         # If GET method or any other method called, return an empty form
         form = UploadMT940Form()

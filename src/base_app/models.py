@@ -1,18 +1,38 @@
 from django.db import models
-from django.core.validators import MinLengthValidator
+from django.core.validators import MinLengthValidator, int_list_validator
 from django.utils.timezone import now
 
 
 class File(models.Model):
     id = models.AutoField(primary_key=True)
-    available_balance_id = models.OneToOneField("base_app.BalanceDetails", on_delete=models.PROTECT, related_name="available_balance_id", verbose_name="Available Balance")
-    final_closing_balance_id = models.OneToOneField("base_app.BalanceDetails", on_delete=models.PROTECT, related_name="final_closing_balance_id", verbose_name="Final Closing Balance")
-    final_opening_balance_id = models.OneToOneField("base_app.BalanceDetails", on_delete=models.PROTECT, related_name="final_opening_balance_id", verbose_name="Final Opening Balance")
-    forward_available_balance_id = models.OneToOneField("base_app.BalanceDetails", on_delete=models.PROTECT, related_name="forward_available_balance_id", verbose_name="Forward Available Balance")
-    account_identification = models.CharField(max_length=37)
-    sequence_number = models.CharField(max_length=255, null=True)
-    statement_number = models.CharField(max_length=255, null=True)
-    transaction_reference_nr = models.CharField(max_length=255, null=True)
+    # Tag :64: (Optional)
+    available_balance_id = models.OneToOneField(
+        "base_app.BalanceDetails", on_delete=models.PROTECT, related_name="available_balance_id", verbose_name="Available Balance", null=True
+    )
+    # Tag :62F: (Mandatory)
+    final_closing_balance_id = models.OneToOneField(
+        "base_app.BalanceDetails", on_delete=models.PROTECT, related_name="final_closing_balance_id", verbose_name="Final Closing Balance"
+    )
+    # Tag :60F: (Mandatory)
+    final_opening_balance_id = models.OneToOneField(
+        "base_app.BalanceDetails", on_delete=models.PROTECT, related_name="final_opening_balance_id", verbose_name="Final Opening Balance"
+    )
+    # Tag :65: (Optional)
+    forward_available_balance_id = models.OneToOneField(
+        "base_app.BalanceDetails", on_delete=models.PROTECT, related_name="forward_available_balance_id", verbose_name="Forward Available Balance", null=True
+    )
+    # Tag :20: (Mandatory)
+    transaction_reference_nr = models.CharField(max_length=16, validators=[MinLengthValidator(16)])
+    # Tag :21: (Optional)
+    related_reference_nr = models.CharField(max_length=16, validators=[MinLengthValidator(16)], null=True)
+    # Tag :25: (Mandatory)
+    account_identification = models.CharField(max_length=35)
+    # Tag :28C: (statement number) (Mandatory)
+    statement_number = models.CharField(validators=[int_list_validator(sep="", allow_negative=False)], max_length=5)
+    # Tag :28C: (sequence number) (Optional)
+    sequence_number = models.CharField(validators=[int_list_validator(sep="", allow_negative=False)], max_length=5, null=True)
+    # Registration time of the file (no tag in the MT940 file)
+    registration_time = models.DateTimeField(auto_now_add=True)
     
     class Meta:
         verbose_name = "File"
@@ -20,22 +40,25 @@ class File(models.Model):
         db_table = "File"
     
     def __str__(self):
-        return f"ID: {self.id} : {self.account_identification}"
+        return f"ID: {self.id} : Identification: {self.account_identification}"
 
 
+# Representation of the :61: tag
 class Transaction(models.Model):
-    bank_reference = models.CharField(max_length=30, primary_key=True)
+    id = models.AutoField(primary_key=True)
+    bank_reference = models.CharField(max_length=30)
     file_id = models.ForeignKey("base_app.File", on_delete=models.CASCADE, verbose_name="File")
     balance_details_id = models.OneToOneField("base_app.BalanceDetails", on_delete=models.PROTECT, related_name="balance_details_id", verbose_name="Balance Details")
-    category_id = models.ForeignKey("base_app.Category", on_delete=models.PROTECT, null=True, verbose_name="Category")
-    customer_reference = models.CharField(max_length=30)
+    category_id = models.ForeignKey("base_app.Category", on_delete=models.PROTECT, verbose_name="Category", null=True, blank=True)
+    custom_description = models.TextField(max_length=255, null=True, blank=True)
+    customer_reference = models.CharField(max_length=16, null=True)
     entry_date = models.DateField(default=now)
     guessed_entry_date = models.DateField(default=now)
-    id = models.CharField(max_length=4)
-    transaction_details = models.CharField(max_length=255)
+    transaction_identification_code = models.CharField(max_length=4)
+    # Tag :86:
+    transaction_details = models.TextField()
     extra_details = models.CharField(max_length=255)
-    custom_description = models.TextField(max_length=255, null=True, blank=True)
-    funds_code = models.CharField(max_length=50, null=True, blank=True)
+    funds_code = models.CharField(max_length=1, null=True, blank=True)
     
     class Meta:
         verbose_name = "Transaction"

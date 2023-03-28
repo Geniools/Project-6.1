@@ -7,7 +7,7 @@ from main.models import User
 @admin.register(User)
 class UserAdmin(UserAdmin):
     list_display = ('username', 'email', 'full_name')
-    list_filter = ('is_staff', 'is_superuser',)
+    list_filter = ('is_staff', 'is_superuser', 'is_treasurer', 'is_active')
     search_fields = ('username', 'email', 'first_name', 'last_name')
     ordering = ('username',)
     
