@@ -7,6 +7,7 @@ from functools import cached_property
 from django.core.files.uploadedfile import UploadedFile
 
 from base_app.models import Transaction, File, BalanceDetails, Currency
+from . import transactions_collection
 
 
 class MT940DBParser:
@@ -120,13 +121,12 @@ class MT940DBParser:
         for obj in self._created_db_objects:
             obj.delete()
     
-    def save_to_nosql_db(self, database_collection) -> dict:
+    def save_to_nosql_db(self) -> dict:
         """
         This method will save the parsed MT940 file to the NoSQL database.
-        :param database_collection: The collection in which the file will be saved.
         :return: The saved transaction in a dictionary format.
         """
         transaction = {"content": self.file_content}
         # Inserting the contents of the file in the NoSQL DB and saving its id for future use
-        self._no_sql_id = database_collection.insert_one(transaction).inserted_id
+        self._no_sql_id = transactions_collection.insert_one(transaction).inserted_id
         return transaction

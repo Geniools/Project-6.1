@@ -4,8 +4,6 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from django.contrib import messages
 
-from . import transactions_collection
-
 from base_app.forms import UploadMT940Form
 from base_app.utils import MT940DBParser
 
@@ -32,7 +30,7 @@ def upload_file(request):
                     try:
                         handler = MT940DBParser(file)
                         handler.save_to_sql_db()
-                        handler.save_to_nosql_db(transactions_collection)
+                        handler.save_to_nosql_db()
                         # Add a success message
                         messages.success(request, f"File \"{file.name}\" uploaded successfully.")
                     except Exception as e:

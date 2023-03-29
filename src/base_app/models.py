@@ -40,7 +40,7 @@ class File(models.Model):
         db_table = "File"
     
     def __str__(self):
-        return f"ID: {self.id} : Identification: {self.account_identification}"
+        return f"Reference nr: {self.transaction_reference_nr} : Identification: {self.account_identification}"
 
 
 # Representation of the :61: tag
@@ -66,7 +66,7 @@ class Transaction(models.Model):
         db_table = "Transaction"
     
     def __str__(self):
-        return self.bank_reference
+        return f"{self.bank_reference}: {self.file_id}"
 
 
 class Category(models.Model):
