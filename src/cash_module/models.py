@@ -13,4 +13,7 @@ class CashTransaction(models.Model):
         db_table = "CashTransaction"
     
     def __str__(self):
-        return f"{self.source} -> {self.target}: {self.balance_details_id}"
+        if hasattr(self, "balance_details_id"):
+            return f"{self.source} -> {self.target}: {self.balance_details_id}"
+        else:
+            return f"{self.source} -> {self.target}"
