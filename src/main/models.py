@@ -34,6 +34,7 @@ class User(AbstractUser):
         # A superuser has the permission of a treasurer
         if self.is_superuser:
             self.is_treasurer = True
+        
         super().save(*args, **kwargs)
     
     def get_full_name(self):
@@ -43,39 +44,32 @@ class User(AbstractUser):
         return f"{self.first_name[0]}. {self.last_name}"
     
     def has_perm(self, perm, obj=None):
-        # The following permissions are always applied for every user (more detailed permissions are defined in the admin.py file)
-        # Every user has the permission to view and change users
-        if perm in ('main.change_user', 'main.view_user'):
+        # Default view permissions - should be available for every user
+        view_permissions = (
+            'main.view_user', 'base_app.view_transaction', 'base_app.view_file', 'base_app.view_balancedetails', 'base_app.view_category', 'base_app.view_currency',
+            'member_module.view_member', 'member_module.view_linkedtransaction', 'cash_module.view_cashtransaction'
+        )
+        # Default change permissions - should be available for treasurers
+        change_permissions = (
+            'base_app.change_transaction', 'member_module.change_member', 'member_module.change_linkedtransaction',
+            'cash_module.change_cashtransaction'
+        )
+        # Default add permissions - should be available for treasurers
+        add_permissions = (
+            'base_app.add_balancedetails', 'base_app.add_category', 'base_app.add_currency', 'member_module.add_member',
+            'member_module.add_linkedtransaction', 'cash_module.add_cashtransaction'
+        )
+        # Other default permissions - available to every user
+        other_default_permissions = ('main.change_user',)
+        
+        if perm in view_permissions or perm in other_default_permissions:
             return True
         
-        # Every user has the permission to view and change transactions
-        if perm in ('base_app.change_transaction', 'base_app.view_transaction'):
-            return True
+        if perm in change_permissions:
+            return self.is_treasurer
         
-        # Every user has the permission to view files (MT940 files)
-        if perm in ('base_app.view_file',):
-            return True
-        
-        # Every user has the permission to view and change balance details
-        if perm in ('base_app.view_balancedetails', 'base_app.add_balancedetails'):
-            return True
-        
-        # Every user has the permission to view balance details
-        if perm in ('base_app.view_category', 'base_app.add_category'):
-            return True
-        
-        # Every user has the permission to view currencies
-        if perm in ('base_app.view_currency', 'base_app.add_currency'):
-            return True
-        
-        if perm in ('member_module.view_member', 'member_module.change_member', 'member_module.add_member'):
-            return True
-        
-        if perm in ('member_module.view_linkedtransaction', 'member_module.change_linkedtransaction', 'member_module.add_linkedtransaction'):
-            return True
-        
-        if perm in ('cash_module.view_cashtransaction', 'cash_module.change_cashtransaction', 'cash_module.add_cashtransaction'):
-            return True
+        if perm in add_permissions:
+            return self.is_treasurer
         
         return super().has_perm(perm, obj)
     

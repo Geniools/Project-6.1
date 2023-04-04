@@ -35,11 +35,13 @@ Moreover, the application contains an API which can be used to retrieve data fro
 
 `` python -m pip install -r requirements.txt ``
 
-3. Create a database in mysql and mongodb
+3. Create a database in *mysql* and *mongodb*
 4. Navigate to ``Project6.1/src/sports_accounting/`` and create a file called `local_settings.py`
    and add the following lines:
 
 ```
+# Copy this file to local_settings.py and fill in the required information.
+# The following file contains the local settings for the application.
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -104,6 +106,10 @@ In order to login to the admin panel of the application navigate to
 
 To upload an MT940 file, navigate to ``http://localhost:<PORT>/mt940/upload`` and upload one or multiple files.
 
+**Note: Only a ``superuser`` or a user with ``treasurer`` permissions can upload MT940 files.**
+
+- For more information about the permissions, please refer to the *User Roles* section.
+
 ## API
 
 The API can be used to retrieve data from the application. The API is build with Django Rest Framework.
@@ -136,15 +142,38 @@ Below is a list of all the endpoints and their functionality.
 - ``http://localhost:<PORT>/api/linked-member-transaction/``: Retrieve all linked transactions
 - ``http://localhost:<PORT>/api/linked-member-transaction/<id>``: Retrieve a specific linked transaction
 
+#### Available formats
+
+The API supports the following formats:
+
+- json
+- xml
+- api (browsable API)
+
+To change the format, add the following to the url:
+
+``?format=<format>``
+
+#### Additional information
+
+The API will offer the same permissions as the admin panel. This means that a user with the ``member``
+role will have read-only permissions and a user with the ``treasurer`` role will have read and write
+permissions (to specific parts of the application).
+
+By default, the API can be viewed in the browser as a browsable API. This means that you can navigate
+through the API and see the available endpoints and their functionality.
+
+- For more information about the permissions, please refer to the *User Roles* section.
+
 ### User Roles
 
 The application contains 3 roles:
 
-1. Member -> can only view data from the application ()
-2. Treasurer -> can view, edit specific data from the application and upload MT940 files
-3. Admin (superuser) -> treasurer role + can manage other users and their roles and other permissions
+1. **Member** -> can only view data from the application (has read-only permissions)
+2. **Treasurer** -> can view, edit specific data from the application and upload MT940 files
+3. **Admin** (*superuser*) -> treasurer role + can manage other users and their roles and other permissions
    regarding deleting and adding data in the database
-4. Staff -> can log in the admin panel (used in combination with the other roles)
+4. **Staff** -> can log in the admin panel (used in combination with the other roles)
 
-**The roles mentioned above together apply both to the build in admin panel and to the
+**The roles mentioned above together apply both to the admin panel and to the
 available API.**

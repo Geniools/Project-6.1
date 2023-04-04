@@ -1,7 +1,7 @@
 from rest_framework import permissions
 
 
-class IsTreasurerOrReadOnly(permissions.BasePermission):
+class IsTreasurerIsSuperuserOrReadOnly(permissions.BasePermission):
     """
     Custom permission to only allow users with the treasurer role write privileges in the API.
     """

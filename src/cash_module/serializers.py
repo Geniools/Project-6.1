@@ -23,6 +23,18 @@ class CashTransactionSerializer(serializers.HyperlinkedModelSerializer):
         balance_details.save()
         return CashTransaction.objects.create(source=validated_data['source'], target=validated_data['target'], balance_details_id=balance_details)
     
+    def update(self, instance, validated_data):
+        instance.source = validated_data.get('source', instance.source)
+        instance.target = validated_data.get('target', instance.target)
+        instance.balance_details_id.amount = validated_data.get('amount', instance.balance_details_id.amount)
+        try:
+            instance.balance_details_id.currency_type_id = Currency.objects.get(name=validated_data['currency'])
+        except Currency.DoesNotExist:
+            raise NotFound(detail='Currency not found')
+        instance.balance_details_id.save()
+        instance.save()
+        return instance
+    
     def to_representation(self, instance):
         return {
             'id': instance.id,
