@@ -19,7 +19,11 @@ class MemberAdmin(admin.ModelAdmin):
 @admin.register(LinkedTransaction)
 class LinkedTransaction(admin.ModelAdmin):
     list_display = ('member_id', 'transaction_bank_reference')
-    list_filter = ('member_id', 'transaction_bank_reference')
+    list_filter = ('member_id',)
+    search_fields = (
+        'member_id__first_name', 'member_id__last_name', 'transaction_bank_reference__bank_reference', 'transaction_bank_reference__transaction_details',
+        'transaction_bank_reference__extra_details', 'transaction_bank_reference__custom_description'
+    )
     
     def has_delete_permission(self, request, obj=None):
         return request.user.is_superuser

@@ -29,8 +29,7 @@ def upload_file(request):
                 if not file.multiple_chunks():
                     try:
                         handler = MT940DBParser(file)
-                        handler.save_to_sql_db()
-                        handler.save_to_nosql_db()
+                        handler.save()
                         # Add a success message
                         messages.success(request, f"File \"{file.name}\" uploaded successfully.")
                     except Exception as e:

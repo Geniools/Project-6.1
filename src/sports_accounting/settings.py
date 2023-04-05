@@ -12,18 +12,18 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 try:
     from . import local_settings
 except ImportError:
-    with open('sports_accounting/local_settings.py', 'w') as f:
+    with open(BASE_DIR / 'sports_accounting/local_settings.py', 'w') as f:
         f.write('')
         raise ImportError(
             'local_settings.py was not found. The file has been created for you to added to your own settings. '
             '(You can refer to the README.md file for more information.)'
         )
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_cron',
 ]
 
 REST_FRAMEWORK = {
@@ -118,6 +119,25 @@ DATABASES = {
 
 # NoSQL DATABASE
 MONGO_DB_URI = local_settings.MONGO_DB_URI
+MONGO_DB_DATABASE = local_settings.MONGO_DB_DATABASE
+MONGO_DB_CLUSTER = local_settings.MONGO_DB_CLUSTER
+
+# Database backup settings (3rd party app - 'django-dbbackup')
+# django-dbbackup: https://django-dbbackup.readthedocs.io/en/master/index.html
+# Unfortunately, this 3rd party backup app works only on linux operating systems.
+
+# DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
+# DBBACKUP_STORAGE_OPTIONS = {
+#     'location': BASE_DIR / 'backup',
+#     # 'location': 'D:\\Nothing\\',
+# }
+
+# Cron jobs settings (3rd party app - 'django-cron')
+# django-cron: https://django-cron.readthedocs.io/en/latest/index.html
+CRON_CLASSES = [
+    'base_app.cron.MongoDBBackupJob',
+    'base_app.cron.MySQLDBBackupJob',
+]
 
 # Password hashing
 # https://docs.djangoproject.com/en/4.1/topics/auth/passwords/

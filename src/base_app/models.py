@@ -50,7 +50,7 @@ class Transaction(models.Model):
     file_id = models.ForeignKey("base_app.File", on_delete=models.CASCADE, verbose_name="File")
     balance_details_id = models.OneToOneField("base_app.BalanceDetails", on_delete=models.PROTECT, related_name="balance_details_id", verbose_name="Balance Details")
     category_id = models.ForeignKey("base_app.Category", on_delete=models.PROTECT, verbose_name="Category", null=True, blank=True)
-    custom_description = models.TextField(max_length=255, null=True, blank=True)
+    custom_description = models.TextField(null=True, blank=True)
     customer_reference = models.CharField(max_length=16, null=True)
     entry_date = models.DateField(default=now)
     guessed_entry_date = models.DateField(default=now)
