@@ -16,7 +16,7 @@ class CashTransactionAdmin(admin.ModelAdmin):
     def amount(self, obj):
         return obj.balance_details_id.amount
     
-    @admin.display(description='currency_type')
+    @admin.display(description='currency')
     def currency_type(self, obj):
         return obj.balance_details_id.currency_type_id
     

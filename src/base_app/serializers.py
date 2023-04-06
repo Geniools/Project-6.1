@@ -30,12 +30,14 @@ class CategorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Category
         fields = ['name']
+        read_only_fields = ['__all__']
 
 
 class CurrencySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Currency
         fields = ['name']
+        read_only_fields = ['__all__']
 
 
 class BalanceDetailsSerializer(serializers.HyperlinkedModelSerializer):

@@ -13,98 +13,115 @@ Moreover, the application contains an API which can be used to retrieve data fro
 
 **For more information over the application, please refer to our Design Document.**
 
-## Installation
+## Getting started
 
 ### Prerequisites
 
-- python 3.9 or higher (venv - optional)
-- Django 4.0 or higher
-- django-rest-framework
+- python 3.9 or higher (application was tested with python 3.9)
 - pip
 - git
-- mysql: 8.0.26 or higher
+- mysql (*or MariaDB*):
+    - *mysqldump* (optional for database backup)
 - mongodb
+    - *mongodump* (optional for database backup)
 
 ### Installation
 
 1. Clone the repository
 
-`` git clone <repository_link>``
+   `` git clone https://github.com/Geniools/Project-6.1.git``
 
-2. Install the requirements
+2. Navigate to the Project root folder (default `Project-6.1`). Install the requirements using pip
 
-`` python -m pip install -r requirements.txt ``
+   `` python -m pip install -r requirements.txt ``
 
 3. Create a database in *mysql* and *mongodb*
-4. Navigate to ``Project6.1/src/sports_accounting/`` and create a file called `local_settings.py`
+    - easy way to install *MySQL* and *phpmyadmin* with docker:
+
+      https://migueldoctor.medium.com/run-mysql-phpmyadmin-locally-in-3-steps-using-docker-74eb735fa1fc
+    - easy way to install *MongoDB* with Atlas:
+
+      https://www.mongodb.com/atlas
+4. Navigate to ``Project6.1/src/sports_accounting/``, create a file named `local_settings.py`
    and add the following lines:
 
-```
-# Copy this file to local_settings.py and fill in the required information.
-# The following file contains the local settings for the application.
-from pathlib import Path
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Whenever the site should be on debug or not
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-# SECURITY WARNING: keep the secret key used in production secret! (for development can be anything)
-SECRET_KEY = '<security_key>'
-
-# When DEBUG is False, in case of a code error, the ADMINS will be notified on their email address.
-ADMINS = []
-
-# Static files
-STATIC_ROOT = "<path_to_static_folder>"
-
-# Media files
-MEDIA_ROOT = BASE_DIR / 'media'
-
-# A list of directories where Django looks for static files (must be empty if used in production)
-STATICFILES_DIRS = [BASE_DIR / 'static']
-
-# Credentials for the SQL database
-DB_PASS = "<database_password>"
-DB_USER = "<database_user>"
-DB_HOST = "<database_host>"
-DB_NAME = "<database_name>"
-DB_PORT = <database_port> # default is 3306
-
-# Credentials for the NoSQL DB
-MONGO_DB_PASSWORD = "<database_password_mongoDB>"
-# You can use the password above in the URI connection below
-MONGO_DB_URI = "<uri_connection_to_mongoDB>"
-
-```
+   ```
+   # Copy this file to local_settings.py and fill in the required information.
+   # The following file contains the local settings for the application.
+   from pathlib import Path
+   
+   # The base directory of the project (default is 'Project-6.1')
+   BASE_DIR = Path(__file__).resolve().parent.parent
+   
+   # Whenever the site should be on debug or not (display errors, etc.)
+   # SECURITY WARNING: don't run with debug turned on in production!
+   DEBUG = True
+   
+   # SECURITY WARNING: keep the secret key used in production secret! (for development can be anything)
+   SECRET_KEY = '<security_key>'
+   
+   # When DEBUG is False, in case of a code error, the ADMINS will be notified on their email address.
+   ADMINS = []
+   
+   # Static files (css, javascript, images)
+   STATIC_ROOT = "<path_to_static_folder>"
+   
+   # Media files
+   MEDIA_ROOT = BASE_DIR / 'media'
+   
+   # A list of directories where Django looks for static files (must be empty if used in production)
+   STATICFILES_DIRS = [BASE_DIR / 'static']
+   
+   # Credentials for the SQL database
+   DB_PASS = "<database_password>"
+   DB_USER = "<database_user>"
+   DB_HOST = "<database_host>"
+   DB_NAME = "<database_name>"
+   DB_PORT = <database_port> # default is 3306
+   
+   # Credentials for the backup SQL database
+   DB_BACKUP_PASS = "<database_password_backup_priviledges>"
+   DB_BACKUP_USER = "<database_user_backup_priviledges>"
+   
+   # Credentials for the NoSQL DB
+   MONGO_DB_DATABASE = "SportsAccounting"
+   MONGO_DB_CLUSTER = "Transactions"
+   
+   MONGO_DB_PASSWORD = "<database_password_mongoDB>"
+   MONGO_DB_URI = "<uri_connection_to_mongoDB>" # example: "mongodb+srv://<username>:<password>@<cluster>/<database>?retryWrites=true&w=majority"
+   
+   ```
 
 5. In your favourite terminal, navigate to the project folder containing the manage.py file (``Project6.1/src/``)
    and run the following commands:
 
-`` python manage.py makemigrations ``
+   `` python manage.py makemigrations ``
 
-`` python manage.py migrate ``
+   `` python manage.py migrate ``
 
-6. Create a superuser (after running the command above fill in the required information when prompted)
+   **! Note: In case any of the commands above fail, try running the command again by supplying the flag
+   ``--skip-checks`` at the end.**
 
-`` python manage.py createsuperuser ``
+6. Create a superuser (after running the command below fill in the required information when prompted)
+
+   `` python manage.py createsuperuser ``
 
 7. Run the server and replace <PORT> with the port you want to run the server on (default is 8000 if not specified)
 
-`` python manage.py runserver <PORT> ``
+   `` python manage.py runserver <PORT> ``
 
 8. Navigate to ``http://localhost:<PORT>`` in your browser to view the application.
 
 ## Usage
 
-In order to login to the admin panel of the application navigate to
-``http://localhost:<PORT>/admin`` and login with the credentials of the superuser you created in step 6.
+1. In order to log in to the admin panel of the application navigate to
+   ``http://localhost:<PORT>/admin`` and login with the credentials of the superuser you created in **step 6**.
 
-- The admin panel can be used to add, edit and delete data from the application.
-- You can create other users and assign them to a group/permission.
+    - The admin panel can be used to add, edit and delete data from the application.
+    - You can create other users and assign them to a group/permission.
 
-To upload an MT940 file, navigate to ``http://localhost:<PORT>/mt940/upload`` and upload one or multiple files.
+2. To upload an MT940 file, navigate to ``http://localhost:<PORT>/mt940/upload`` and upload one or multiple files.
+3. To access the API, navigate to ``http://localhost:<PORT>/api``.
 
 **Note: Only a ``superuser`` or a user with ``treasurer`` permissions can upload MT940 files.**
 
@@ -142,7 +159,7 @@ Below is a list of all the endpoints and their functionality.
 - ``http://localhost:<PORT>/api/linked-member-transaction/``: Retrieve all linked transactions
 - ``http://localhost:<PORT>/api/linked-member-transaction/<id>``: Retrieve a specific linked transaction
 
-#### Available formats
+### Available formats
 
 The API supports the following formats:
 
@@ -150,11 +167,11 @@ The API supports the following formats:
 - xml
 - api (browsable API)
 
-To change the format, add the following to the url:
+To change the format of the displayed data, supply the url with the following parameter:
 
 ``?format=<format>``
 
-#### Additional information
+### Additional information
 
 The API will offer the same permissions as the admin panel. This means that a user with the ``member``
 role will have read-only permissions and a user with the ``treasurer`` role will have read and write
@@ -165,7 +182,7 @@ through the API and see the available endpoints and their functionality.
 
 - For more information about the permissions, please refer to the *User Roles* section.
 
-### User Roles
+## User Roles
 
 The application contains 3 roles:
 
@@ -177,3 +194,35 @@ The application contains 3 roles:
 
 **The roles mentioned above together apply both to the admin panel and to the
 available API.**
+
+## Backup
+
+The application makes use of the 3rd party library *django-cron* to run scripts on a regular basis (only in production)
+which perform backups of both *MongoDB* and *MySQL* database. The backups are saved to the
+``Project6.1/src/backups/`` folder (folder will be created if it does not exist).
+
+In order to perform a backup immediately you can run the following command from the terminal in the folder containing
+the manage.py file:
+
+`` python manage.py runcrons ``
+
+# Miscellaneous
+
+On Windows systems *python* might not be added to the **PATH** variable. In this case you will have to add it manually.
+To do this, follow the steps below:
+
+1. Open the ``Control Panel`` and navigate to ``System and Security`` -> ``System`` -> ``Advanced system settings``.
+2. Click on ``Environment Variables``.
+3. In the ``System variables`` section, select the ``Path`` variable and click ``Edit``.
+4. Click ``New`` and add the path to the ``python.exe`` file (e.g. ``C:\Python38\``).
+5. Click ``OK`` to save the changes.
+6. Close all open windows and restart your terminal.
+7. Run the command ``python`` in your terminal. If it works, you have successfully added python to the PATH variable.
+
+**`mongodump` and `mysqldump` have to be added to the PATH variable as well**
+
+If the ``python`` command is not recognized try using ``py`` instead of ``python`` on *Windows* systems.
+On *Linux* systems make sure to use ``python3`` instead of ``python``.
+
+If the ``pip`` command is not recognized try using ``python -m pip`` instead of ``pip`` on *Windows* systems
+(or make sure to add `pip` to the PATH variable). On *Linux* systems make sure to use ``pip3`` instead of ``pip``.

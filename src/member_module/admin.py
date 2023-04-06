@@ -9,11 +9,17 @@ class MemberAdmin(admin.ModelAdmin):
     list_filter = ('last_name', 'email')
     search_fields = ('first_name', 'last_name', 'email')
     
+    def get_readonly_fields(self, request, obj=None):
+        if not request.user.is_superuser:
+            self.readonly_fields = ('first_name', 'last_name')
+        
+        return super().get_readonly_fields(request, obj)
+    
     def has_delete_permission(self, request, obj=None):
         return request.user.is_superuser
     
     def has_change_permission(self, request, obj=None):
-        return request.user.is_superuser
+        return request.user.is_treasurer or request.user.is_superuser
 
 
 @admin.register(LinkedTransaction)
@@ -27,3 +33,6 @@ class LinkedTransaction(admin.ModelAdmin):
     
     def has_delete_permission(self, request, obj=None):
         return request.user.is_superuser
+    
+    def has_change_permission(self, request, obj=None):
+        return False

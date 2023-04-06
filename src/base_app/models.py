@@ -111,7 +111,8 @@ class BalanceDetails(models.Model):
     class Meta:
         verbose_name = "Balance Details"
         verbose_name_plural = "Balance Details"
+        ordering = ["amount", "date"]
         db_table = "BalanceDetails"
     
     def __str__(self):
-        return f"Amount: {self.amount}; Date: {self.date}"
+        return f"Amount: {self.amount} {self.currency_type_id.name}; Date: {self.date}"

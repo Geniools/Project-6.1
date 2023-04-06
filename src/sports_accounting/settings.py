@@ -40,19 +40,20 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'base_app',
-    'main',
+    'main.apps.MainConfig',
     'member_module',
     'cash_module',
-    'jazzmin',
     'rest_framework',
     'rest_framework_xml',
+    'jazzmin',  # Must be before django.contrib.admin
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_cron',
+    # 'django_cron',  # Should be at the end
+    'main.apps.DjangoCronConfig',  # Same as above, but using this as it can provide a custom name for the app
 ]
 
 REST_FRAMEWORK = {
@@ -114,6 +115,11 @@ DATABASES = {
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
         }
+    },
+    'backup': {
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': local_settings.DB_BACKUP_USER,  # change this to your database name (inside local_settings.py)
+        'PASSWORD': local_settings.DB_BACKUP_PASS,  # change this to your username (inside local_settings.py)
     }
 }
 
@@ -124,7 +130,7 @@ MONGO_DB_CLUSTER = local_settings.MONGO_DB_CLUSTER
 
 # Database backup settings (3rd party app - 'django-dbbackup')
 # django-dbbackup: https://django-dbbackup.readthedocs.io/en/master/index.html
-# Unfortunately, this 3rd party backup app works only on linux operating systems.
+# Unfortunately, this 3rd party backup app works only on linux operating systems (production).
 
 # DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
 # DBBACKUP_STORAGE_OPTIONS = {
@@ -132,11 +138,12 @@ MONGO_DB_CLUSTER = local_settings.MONGO_DB_CLUSTER
 #     # 'location': 'D:\\Nothing\\',
 # }
 
-# Cron jobs settings (3rd party app - 'django-cron')
+# Cron jobs settings (3rd party app - 'django-cron') - will be used for backup
 # django-cron: https://django-cron.readthedocs.io/en/latest/index.html
+# To run cron jobs immediately, you need to run the following command: 'python manage.py runcrons'
 CRON_CLASSES = [
-    'base_app.cron.MongoDBBackupJob',
-    'base_app.cron.MySQLDBBackupJob',
+    'main.cron.MongoDBBackupJob',
+    'main.cron.MySQLDBBackupJob',
 ]
 
 # Password hashing
@@ -198,9 +205,10 @@ STATICFILES_DIRS = local_settings.STATICFILES_DIRS
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# Define the session cookie age in seconds
 SESSION_COOKIE_AGE = 60 * 60 * 24  # 1 day
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'main.User'
 
 # Jazzmin settings (UI used in the admin panel)
@@ -211,6 +219,9 @@ JAZZMIN_SETTINGS = {
     'site_brand': 'Sports Accounting',
     "welcome_sign": "Sports Accounting Admin Login Page",
     "copyright": "Quintor",
+    # "hide_apps": [
+    #     "django_cron",
+    # ],
     "order_with_respect_to": ["auth", "Main", "Main.User", ],
     "usermenu_links": [
         {"model": "auth.user"}
@@ -228,6 +239,8 @@ JAZZMIN_SETTINGS = {
         "auth.Group": "fas fa-users",
         "main": "fas fa-users-cog",
         "main.User": "fas fa-user",
+        "django_cron.CronJobLog": "fas fa-clock",
+        "django_cron.CronJobLock": "fas fa-lock",
         "base_app.Transaction": "fas fa-file-invoice",
         "base_app.File": "fas fa-file",
         "base_app.Currency": "fas fa-euro-sign",

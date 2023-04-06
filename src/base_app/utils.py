@@ -3,7 +3,6 @@ import mt940
 
 from typing import Optional
 from functools import cached_property
-from bson import ObjectId
 from pymongo import MongoClient
 
 from django.core.files.uploadedfile import UploadedFile
@@ -15,6 +14,12 @@ from base_app.models import Transaction, File, BalanceDetails, Currency
 class MT940DBParser:
     def __init__(self, file: UploadedFile):
         self.__file = file
+        # MongoDB connection
+        client = MongoClient(settings.MONGO_DB_URI)
+        # Define the database
+        mongo_db = client[settings.MONGO_DB_DATABASE]
+        # Define the collections (same as tables in SQL)
+        self._transactions_collection = mongo_db[settings.MONGO_DB_CLUSTER]
         # A list to keep track of all saved objects in the database (can be used for deleting them if an error happens)
         self._created_db_objects = []
         # The id of the inserted query in the no sql database (can be used to access/delete the nosql DB in case of an error)
@@ -126,23 +131,18 @@ class MT940DBParser:
         
         # Deleting the file from the NoSQL DB (the following lines should be commented if the NoSQL files should be kept)
         # if self._no_sql_id is not None:
-        #     transactions_collection.delete_one({"_id": ObjectId(self._no_sql_id)})
+        #     from bson import ObjectId
+        #     self._transactions_collection.delete_one({"_id": ObjectId(self._no_sql_id)})
     
     def save_to_nosql_db(self) -> dict:
         """
         This method will save the parsed MT940 file to the NoSQL database.
         :return: The saved transaction in a dictionary format.
         """
-        # MongoDB connection
-        client = MongoClient(settings.MONGO_DB_URI)
-        # Define the database
-        db = client[settings.MONGO_DB_DATABASE]
-        # Define the collections (same as tables in SQL)
-        transactions_collection = db[settings.MONGO_DB_CLUSTER]
         # The transaction to be inserted
         transaction = {"content": self.file_content}
         # Inserting the contents of the file in the NoSQL DB and saving its id for future use
-        self._no_sql_id = transactions_collection.insert_one(transaction).inserted_id
+        self._no_sql_id = self._transactions_collection.insert_one(transaction).inserted_id
         return transaction
     
     def save(self) -> File:

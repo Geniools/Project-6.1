@@ -3,7 +3,7 @@ from django.db import models
 
 class CashTransaction(models.Model):
     id = models.AutoField(primary_key=True)
-    balance_details_id = models.OneToOneField("base_app.BalanceDetails", on_delete=models.DO_NOTHING, verbose_name="Balance Details")
+    balance_details_id = models.OneToOneField("base_app.BalanceDetails", on_delete=models.PROTECT, verbose_name="Balance Details")
     source = models.CharField(max_length=50)
     target = models.CharField(max_length=50)
     

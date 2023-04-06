@@ -18,8 +18,8 @@ class Member(models.Model):
 
 class LinkedTransaction(models.Model):
     id = models.AutoField(primary_key=True)
-    member_id = models.ForeignKey(Member, on_delete=models.DO_NOTHING, verbose_name="Member")
-    transaction_bank_reference = models.OneToOneField("base_app.Transaction", on_delete=models.DO_NOTHING, max_length=30, verbose_name="Transaction")
+    member_id = models.ForeignKey(Member, on_delete=models.PROTECT, verbose_name="Member")
+    transaction_bank_reference = models.OneToOneField("base_app.Transaction", on_delete=models.PROTECT, max_length=30, verbose_name="Transaction")
     
     class Meta:
         verbose_name = "Linked Transaction"

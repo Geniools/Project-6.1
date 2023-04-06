@@ -1,11 +1,12 @@
-from rest_framework import viewsets, permissions
+from rest_framework import permissions
 
-from base_app.permissions import IsTreasurerIsSuperuserOrReadOnly
+from main.permissions import IsTreasurerIsSuperuserOrReadOnly
 from cash_module.models import CashTransaction
 from cash_module.serializers import CashTransactionSerializer
+from base_app.api_views import CreateAndListOnlyViewSet
 
 
-class CashTransactionViewSet(viewsets.ModelViewSet):
+class CashTransactionViewSet(CreateAndListOnlyViewSet):
     # API endpoint that allows users to be viewed or edited.
     queryset = CashTransaction.objects.all()
     serializer_class = CashTransactionSerializer
