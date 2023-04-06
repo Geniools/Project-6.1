@@ -16,7 +16,7 @@ class CashTransactionAdmin(admin.ModelAdmin):
     def amount(self, obj):
         return obj.balance_details_id.amount
     
-    @admin.display(description='currency_type')
+    @admin.display(description='currency')
     def currency_type(self, obj):
         return obj.balance_details_id.currency_type_id
     
@@ -28,14 +28,17 @@ class CashTransactionAdmin(admin.ModelAdmin):
     
     def get_form(self, request, obj=None, change=False, **kwargs):
         form = super().get_form(request, obj, change, **kwargs)
-        if obj:
+        if obj is not None:
             form.base_fields['amount'].initial = obj.balance_details_id.amount
             form.base_fields['currency_type'].initial = obj.balance_details_id.currency_type_id
+        else:
+            form.base_fields['amount'].initial = None
+            form.base_fields['currency_type'].initial = None
         
         return form
     
     def save_model(self, request, obj, form, change):
-        if obj.balance_details_id:
+        if hasattr(obj, "balance_details_id"):
             balance_details = obj.balance_details_id
         else:
             balance_details = BalanceDetails()

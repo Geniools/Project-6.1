@@ -1,20 +1,22 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
+from django_cron.admin import CronJobLog, CronJobLock, DurationFilter
+
 from main.models import User
 
 
 @admin.register(User)
 class UserAdmin(UserAdmin):
     list_display = ('username', 'email', 'full_name')
-    list_filter = ('is_staff', 'is_superuser',)
+    list_filter = ('is_staff', 'is_superuser', 'is_treasurer', 'is_active')
     search_fields = ('username', 'email', 'first_name', 'last_name')
     ordering = ('username',)
     
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields':  ('username', 'email', 'first_name', 'last_name', 'password1', 'password2'),
+            'fields': ('username', 'email', 'first_name', 'last_name', 'password1', 'password2'),
         }),
     )
     
@@ -78,3 +80,44 @@ class UserAdmin(UserAdmin):
         
         # Otherwise, return only the user that is logged in
         return qs.filter(username=request.user.username)
+
+
+# First, unregister the default admin classes for CronJobLog and CronJobLock
+admin.site.unregister(CronJobLog)
+admin.site.unregister(CronJobLock)
+
+
+# Afterward, register the custom admin classes for CronJobLog and CronJobLock
+
+@admin.register(CronJobLog)
+class CronJobLogAdmin(admin.ModelAdmin):
+    list_display = ('code', 'start_time', 'end_time', 'is_success')
+    search_fields = ('code', 'message')
+    ordering = ('-start_time',)
+    list_filter = ('code', 'start_time', 'is_success', DurationFilter)
+    
+    def has_module_permission(self, request):
+        return request.user.is_superuser
+    
+    def has_add_permission(self, request):
+        return False
+    
+    def has_change_permission(self, request, obj=None):
+        return False
+
+
+@admin.register(CronJobLock)
+class CronJobLockAdmin(admin.ModelAdmin):
+    list_display = ('job_name', 'locked')
+    list_filter = ('job_name', 'locked')
+    search_fields = ('job_name',)
+    ordering = ('job_name', 'locked')
+    
+    def has_module_permission(self, request):
+        return request.user.is_superuser
+    
+    def has_add_permission(self, request):
+        return False
+    
+    def has_change_permission(self, request, obj=None):
+        return False
