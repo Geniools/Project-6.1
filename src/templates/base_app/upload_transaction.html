@@ -1,0 +1,17 @@
+{% extends 'main/base.html' %}
+
+{% block body %}
+	<form action="{% url 'transaction_upload' %}" method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+		{{ form.as_div }}
+		<input type="submit" value="Submit file">
+	</form>
+
+	{% if messages %}
+		<ul class="messages">
+			{% for message in messages %}
+				<li {% if message.tags %}class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+{% endblock %}
