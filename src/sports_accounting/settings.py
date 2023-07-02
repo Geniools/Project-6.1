@@ -43,8 +43,6 @@ INSTALLED_APPS = [
     'main.apps.MainConfig',
     'member_module',
     'cash_module',
-    'rest_framework',
-    'rest_framework_xml',
     'jazzmin',  # Must be before django.contrib.admin
     'django.contrib.admin',
     'django.contrib.auth',
@@ -54,11 +52,23 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 'django_cron',  # Should be at the end
     'main.apps.DjangoCronConfig',  # Same as above, but using this as it can provide a custom name for the app
+    'rest_framework',
+    'rest_framework_xml',
+    'rest_framework.authtoken',
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
+    
+    # 'DEFAULT_AUTHENTICATION_CLASSES': (
+    #     'rest_framework.authentication.TokenAuthentication',
+    #     'rest_framework.authentication.SessionAuthentication',
+    # ),
+    #
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ),
     
     'DEFAULT_PARSER_CLASSES': (
         'rest_framework.parsers.JSONParser',

@@ -1,1 +1,28 @@
 {% extends 'main/base.html' %}
+
+{% block title %}API Response{% endblock %}
+
+{% block body %}
+	<h1>API Response</h1>
+
+	<table style="border-collapse: collapse; width: 100%;">
+		<thead>
+		<tr style="border: 2px solid black;">
+			<th style="border: 2px solid black;">ID</th>
+			<th style="border: 2px solid black;">First Name</th>
+			<th style="border: 2px solid black;">Last Name</th>
+			<th style="border: 2px solid black;">Email</th>
+		</tr>
+		</thead>
+		<tbody>
+		{% for result in results.results %}
+			<tr style="border: 2px solid black;">
+				<td style="border: 2px solid black;">{{ result.id }}</td>
+				<td style="border: 2px solid black;">{{ result.first_name }}</td>
+				<td style="border: 2px solid black;">{{ result.last_name }}</td>
+				<td style="border: 2px solid black;">{{ result.email }}</td>
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}
