@@ -25,12 +25,50 @@ class MemberSchemaValidatorView(views.APIView):
     
     def post(self, request, format=None):
         # print(request.data)
+        
+        data = {
+            'detail': 'Error message',
+        }
+        
+        # Remove the id from the data, because it is not needed for creation
+        del request.data['id']
+        member = Member(**request.data)
         try:
-            Member.objects.create(**request.data)
+            # First validate the data
+            member.full_clean()
+            # Then save it
+            member.save()
         except Exception as e:
-            return Response(data=str(e), status=status.HTTP_400_BAD_REQUEST)
+            data['detail'] = str(e)
+            return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
         
         return Response(status=status.HTTP_201_CREATED)
+    
+    def put(self, request, pk=None):
+        # print(request.data)
+        
+        data = {
+            'detail': 'Error! You have probably not specified an id for the member!',
+        }
+        
+        try:
+            # Update the member
+            member = Member.objects.get(id=request.data['id'])
+            # Remove the id from the data, because it is not needed for creation
+            del request.data['id']
+            for key, value in request.data.items():
+                setattr(member, key, value)
+            # First validate the data
+            member.full_clean()
+            # Then save it
+            member.save()
+        except KeyError as err:
+            return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            data['detail'] = str(e)
+            return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+        
+        return Response(status=status.HTTP_200_OK)
 
 
 # Base app

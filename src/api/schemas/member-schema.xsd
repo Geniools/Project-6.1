@@ -2,25 +2,34 @@
 	<xs:element name="member">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="first_name" maxOccurs="1" minOccurs="1">
+				<xs:element name="id" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:integer">
+							<xs:minInclusive value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="first_name" minOccurs="1" maxOccurs="1">
 					<xs:simpleType>
 						<xs:restriction base="xs:string">
+							<xs:minLength value="1"/>
 							<xs:maxLength value="20"/>
 						</xs:restriction>
 					</xs:simpleType>
 				</xs:element>
-				<xs:element name="last_name" maxOccurs="1" minOccurs="1">
+				<xs:element name="last_name" minOccurs="1" maxOccurs="1">
 					<xs:simpleType>
 						<xs:restriction base="xs:string">
+							<xs:minLength value="1"/>
 							<xs:maxLength value="20"/>
 						</xs:restriction>
 					</xs:simpleType>
 				</xs:element>
-				<xs:element name="email" maxOccurs="1" minOccurs="1">
+				<xs:element name="email" minOccurs="1" maxOccurs="1">
 					<xs:simpleType>
 						<xs:restriction base="xs:string">
 							<xs:maxLength value="60"/>
-							<xs:pattern value="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}"/>
+							<xs:pattern value=".+@.+\..+"/>
 						</xs:restriction>
 					</xs:simpleType>
 				</xs:element>
