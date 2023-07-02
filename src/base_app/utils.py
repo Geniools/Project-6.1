@@ -14,16 +14,16 @@ from base_app.models import Transaction, File, BalanceDetails, Currency
 class MT940DBParser:
     def __init__(self, file: UploadedFile):
         self.__file = file
-        # MongoDB connection
-        client = MongoClient(settings.MONGO_DB_URI)
-        # Define the database
-        mongo_db = client[settings.MONGO_DB_DATABASE]
-        # Define the collections (same as tables in SQL)
-        self._transactions_collection = mongo_db[settings.MONGO_DB_CLUSTER]
         # A list to keep track of all saved objects in the database (can be used for deleting them if an error happens)
         self._created_db_objects = []
         # The id of the inserted query in the no sql database (can be used to access/delete the nosql DB in case of an error)
         self._no_sql_id = None
+        # # MongoDB connection (commented because there is no active MongoDB cluster up and running)
+        # client = MongoClient(settings.MONGO_DB_URI)
+        # # Define the database
+        # mongo_db = client[settings.MONGO_DB_DATABASE]
+        # # Define the collections (same as tables in SQL)
+        # self._transactions_collection = mongo_db[settings.MONGO_DB_CLUSTER]
     
     @property
     def file(self) -> UploadedFile:
@@ -150,5 +150,5 @@ class MT940DBParser:
         This method will save the parsed MT940 file to both the SQL and NoSQL databases.
         :return: The saved transaction in the SQL DB.
         """
-        self.save_to_nosql_db()
+        # self.save_to_nosql_db()
         return self.save_to_sql_db()
