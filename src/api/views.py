@@ -1,7 +1,9 @@
-from rest_framework import viewsets, permissions, mixins
+from rest_framework import viewsets, permissions, mixins, views, status
+from rest_framework.response import Response
 
 from api.permissions import IsTreasurerIsSuperuserOrReadOnly
 from api.serializers import *
+from api.schemas.parser import XMLSchemaParser, JSONSchemaParser
 
 
 # ViewSets templates
@@ -11,6 +13,24 @@ class CreateAndListOnlyViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixi
 
 class UpdateAndListOnlyViewSet(mixins.UpdateModelMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     pass
+
+
+# The following endpoint is used only to demonstrate validation of json and xml data using schemas
+class MemberSchemaValidatorView(views.APIView):
+    """
+    View to demonstrate validation of json and xml data using schemas.
+    """
+    permission_classes = [permissions.IsAuthenticated, IsTreasurerIsSuperuserOrReadOnly]
+    parser_classes = [XMLSchemaParser, JSONSchemaParser]
+    
+    def post(self, request, format=None):
+        # print(request.data)
+        try:
+            Member.objects.create(**request.data)
+        except Exception as e:
+            return Response(data=str(e), status=status.HTTP_400_BAD_REQUEST)
+        
+        return Response(status=status.HTTP_201_CREATED)
 
 
 # Base app
@@ -59,7 +79,7 @@ class CashTransactionViewSet(CreateAndListOnlyViewSet):
 
 # Member module
 class MemberViewSet(viewsets.ModelViewSet):
-    queryset = Member.objects.all()
+    queryset = Member.objects.all().order_by('-email')
     serializer_class = MemberSerializer
     permission_classes = [permissions.IsAuthenticated, IsTreasurerIsSuperuserOrReadOnly]
 
