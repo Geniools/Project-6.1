@@ -18,6 +18,7 @@ ADMINS = []
 
 # Static files (css, javascript, images)
 # The path from which the server will serve static files (used in production)
+# If you don't know what this is, put the path to a folder called 'static' in the root of the project (D:\Programming\Python\Project-6.1\static - for example)
 STATIC_ROOT = "/static"
 
 # Media files
@@ -27,8 +28,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # Credentials for the SQL database
-DB_PASS = "Passw0rd!"
-DB_USER = "bob"
+DB_PASS = ""
+DB_USER = "root"
 DB_HOST = "db"
 DB_NAME = "sports_accounting"
 DB_PORT = 3306

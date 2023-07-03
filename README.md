@@ -17,7 +17,7 @@ Moreover, the application contains an API which can be used to retrieve data fro
 
 ### Prerequisites
 
-- python 3.9 or higher (application was tested with python 3.9)
+- python 3.9 or higher
 - pip
 - git
 - mysql (*or MariaDB*):
@@ -26,6 +26,41 @@ Moreover, the application contains an API which can be used to retrieve data fro
     - *mongodump* (optional for database backup)
 
 ### Installation
+
+#### Quick installation - Docker
+
+1. Make sure you have docker installed on your machine. If not, please refer to the following link:
+
+   https://docs.docker.com/get-docker/
+
+
+2. Clone the repository
+
+   ``git clone https://github.com/Geniools/Project-6.1.git``
+
+
+3. Copy the file ``example_local_settings.py`` from the root folder to ``src/sports_accounting/`` and
+   rename it to ``local_settings.py``. *Do not change the contents of the file if you use the default Docker
+   configuration*!
+
+
+4. Navigate to the Project root folder (default `Project_6.1`). Run the following command:
+
+   `` docker-compose build ``
+   . This will build the docker images.
+
+5. Run the following command:
+
+   `` docker-compose up ``
+   . This will start the containers (the database and the Django application).
+
+**Note!**: *if the above command fails, or the containers do not start as expected, **run the command again**.
+At first, the database takes longer to set up, so the application might not be able to connect to the database*.
+
+6. Navigate to ``http://localhost:8000`` in your browser to view the application. Refer to the **Usage** section for
+   more information.
+
+#### Manual installation
 
 1. Clone the repository
 

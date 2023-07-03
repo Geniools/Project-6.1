@@ -1,5 +1,26 @@
-version: "2"
+version: "3"
 services:
+    web:
+        container_name: web
+        build: .
+        ports:
+            - "8000:8000"
+        restart: on-failure
+        depends_on:
+            db:
+                condition: service_healthy
+        links:
+            - db
+        volumes:
+            - ./src:/src
+        command:
+            - /bin/sh
+            - -c
+            - |
+                python3 manage.py migrate --skip-checks 
+                python3 manage.py createadmin 
+                python3 manage.py runserver 0.0.0.0:8000
+
     db:
         container_name: db
         image: mysql:latest
@@ -7,34 +28,12 @@ services:
             - "3306:3306"
         environment:
             MYSQL_DATABASE: 'sports_accounting'
-            MYSQL_USER: 'bob'
-            MYSQL_PASSWORD: 'Passw0rd!'
-            MYSQL_ROOT_PASSWORD: 'Passw0rd!'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
         volumes:
-            - db_data:/db_docker/mysql
+            - ./data/mysql/db:/var/lib/mysql
+        healthcheck:
+            test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+            interval: 3s
+            timeout: 5s
+            retries: 5
         restart: always
-        networks:
-            - webnet
-        expose:
-            - "3306"
-
-    web:
-        container_name: web
-        build:
-            context: .
-            dockerfile: Dockerfile
-        ports:
-            - "8000:8000"
-        restart: always
-        depends_on:
-            - db
-        networks:
-            - webnet
-        volumes:
-            - ./src:/src
-
-volumes:
-    db_data:
-
-networks:
-    webnet:

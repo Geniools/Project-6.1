@@ -2,6 +2,7 @@
 .idea
 backup
 test_mt940_files
+data/
 
 # Fleet
 .fleet
