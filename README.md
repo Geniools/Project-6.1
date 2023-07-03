@@ -50,7 +50,7 @@ Moreover, the application contains an API which can be used to retrieve data fro
    # The following file contains the local settings for the application.
    from pathlib import Path
    
-   # The base directory of the project (default is 'Project-6.1')
+   # The base directory of the project (default is 'src')
    BASE_DIR = Path(__file__).resolve().parent.parent
    
    # Whenever the site should be on debug or not (display errors, etc.)

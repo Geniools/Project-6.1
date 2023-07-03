@@ -1,0 +1,40 @@
+version: "2"
+services:
+    db:
+        container_name: db
+        image: mysql:latest
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_DATABASE: 'sports_accounting'
+            MYSQL_USER: 'bob'
+            MYSQL_PASSWORD: 'Passw0rd!'
+            MYSQL_ROOT_PASSWORD: 'Passw0rd!'
+        volumes:
+            - db_data:/db_docker/mysql
+        restart: always
+        networks:
+            - webnet
+        expose:
+            - "3306"
+
+    web:
+        container_name: web
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "8000:8000"
+        restart: always
+        depends_on:
+            - db
+        networks:
+            - webnet
+        volumes:
+            - ./src:/src
+
+volumes:
+    db_data:
+
+networks:
+    webnet:
