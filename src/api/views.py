@@ -117,7 +117,7 @@ class CashTransactionViewSet(CreateAndListOnlyViewSet):
 
 # Member module
 class MemberViewSet(viewsets.ModelViewSet):
-    queryset = Member.objects.all().order_by('-email')
+    queryset = Member.objects.all().order_by('pk')
     serializer_class = MemberSerializer
     permission_classes = [permissions.IsAuthenticated, IsTreasurerIsSuperuserOrReadOnly]
 
