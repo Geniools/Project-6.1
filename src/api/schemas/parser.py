@@ -59,12 +59,12 @@ class JSONSchemaParser(JSONParser):
         Moreover, it validates the json against a pre-defined schema.
         """
         
-        # Normally, the actual parsing is done by the parent class, which returns a dict
+        # The actual parsing is done by the parent class, which returns a dict
         data = super().parse(stream, media_type, parser_context)
         
         # Then we validate the json against the schema
         try:
-            Draft7Validator(self.schema_json).validate(data)
+            Draft7Validator(self.schema_json).validate(data)  # In Python, a dict is basically identical structure-wise to a json
         except jsonschema.exceptions.ValidationError as ex:
             raise ParseError('Malformed JSON. %s' % ex)
         

@@ -1,6 +1,5 @@
 # Copy this file to local_settings.py and fill in the required information.
 # The following file contains the local settings for the application.
-import os
 from pathlib import Path
 
 # The base directory of the project (default is 'src')
@@ -24,10 +23,10 @@ STATIC_ROOT = "/static"
 # Media files
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# A list of directories where Django looks for static files (must be empty if used in production)
+# A list of directories where Django looks for static files
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
-# Credentials for the SQL database
+# Credentials for the SQL database (MySQL or MariaDB)
 DB_PASS = ""
 DB_USER = "root"
 DB_HOST = "db"

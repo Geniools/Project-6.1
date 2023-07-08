@@ -60,6 +60,10 @@ At first, the database takes longer to set up, so the application might not be a
 6. Navigate to ``http://localhost:8000`` in your browser to view the application. Refer to the **Usage** section for
    more information.
 
+- a default superuser is created with the following credentials:
+    - username: admin
+    - password: admin
+
 #### Manual installation
 
 1. Clone the repository
@@ -78,7 +82,7 @@ At first, the database takes longer to set up, so the application might not be a
 
       https://www.mongodb.com/atlas
 4. Navigate to ``Project6.1/src/sports_accounting/``, create a file named `local_settings.py`
-   and add the following lines:
+   and add the following lines (or copy the file ``example_local_settings.py`` and rename it to ``local_settings.py``
 
    ```
    # Copy this file to local_settings.py and fill in the required information.
@@ -127,6 +131,9 @@ At first, the database takes longer to set up, so the application might not be a
    
    ```
 
+*Note:* If you use the ``example_local_settings.py`` file, you must change the SQL credentials to match your database
+configuration. Other settings can be left as they are.
+
 5. In your favourite terminal, navigate to the project folder containing the manage.py file (``Project6.1/src/``)
    and run the following commands:
 
@@ -137,15 +144,28 @@ At first, the database takes longer to set up, so the application might not be a
    **! Note: In case any of the commands above fail, try running the command again by supplying the flag
    ``--skip-checks`` at the end.**
 
+
 6. Create a superuser (after running the command below fill in the required information when prompted)
 
-   `` python manage.py createsuperuser ``
+       `` python manage.py createsuperuser ``
+
+       OR
+
+       ``python manage.py createadmin`` (will create a default superuser with the username and password "admin"")
+
 
 7. Run the server and replace <PORT> with the port you want to run the server on (default is 8000 if not specified)
 
    `` python manage.py runserver <PORT> ``
 
+
 8. Navigate to ``http://localhost:<PORT>`` in your browser to view the application.
+
+### Extra
+
+1. To create a default database *view* run the following command:
+
+   `` python manage.py createdbview ``
 
 ## Usage
 
