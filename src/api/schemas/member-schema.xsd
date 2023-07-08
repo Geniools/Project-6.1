@@ -28,6 +28,7 @@
 				<xs:element name="email" minOccurs="1" maxOccurs="1">
 					<xs:simpleType>
 						<xs:restriction base="xs:string">
+                            <xs:minLength value="1"/>
 							<xs:maxLength value="60"/>
 							<xs:pattern value=".+@.+\..+"/>
 						</xs:restriction>
