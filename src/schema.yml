@@ -1,0 +1,1108 @@
+# A schema for the entire API
+openapi: 3.0.2
+info:
+    title: 'Sports Accounting'
+    version: '1.0.0'
+paths:
+    /api/file/:
+        get:
+            operationId: listFiles
+            description: ''
+            parameters:
+                -   name: page
+                    required: false
+                    in: query
+                    description: A page number within the paginated result set.
+                    schema:
+                        type: integer
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    count:
+                                        type: integer
+                                        example: 123
+                                    next:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=4
+                                    previous:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=2
+                                    results:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/File'
+                        application/xml:
+                            schema:
+                                type: object
+                                properties:
+                                    count:
+                                        type: integer
+                                        example: 123
+                                    next:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=4
+                                    previous:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=2
+                                    results:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/File'
+                    description: ''
+            tags:
+                - api
+    /api/file/{id}/:
+        get:
+            operationId: retrieveFile
+            description: ''
+            parameters:
+                -   name: id
+                    in: path
+                    required: true
+                    description: A unique integer value identifying this File.
+                    schema:
+                        type: string
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/File'
+                        application/xml:
+                            schema:
+                                $ref: '#/components/schemas/File'
+                    description: ''
+            tags:
+                - api
+    /api/transaction/:
+        get:
+            operationId: listTransactions
+            description: ''
+            parameters:
+                -   name: page
+                    required: false
+                    in: query
+                    description: A page number within the paginated result set.
+                    schema:
+                        type: integer
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    count:
+                                        type: integer
+                                        example: 123
+                                    next:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=4
+                                    previous:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=2
+                                    results:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Transaction'
+                        application/xml:
+                            schema:
+                                type: object
+                                properties:
+                                    count:
+                                        type: integer
+                                        example: 123
+                                    next:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=4
+                                    previous:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=2
+                                    results:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Transaction'
+                    description: ''
+            tags:
+                - api
+    /api/transaction/{id}/:
+        get:
+            operationId: retrieveTransaction
+            description: ''
+            parameters:
+                -   name: id
+                    in: path
+                    required: true
+                    description: A unique integer value identifying this Transaction.
+                    schema:
+                        type: string
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Transaction'
+                        application/xml:
+                            schema:
+                                $ref: '#/components/schemas/Transaction'
+                    description: ''
+            tags:
+                - api
+        put:
+            operationId: updateTransaction
+            description: ''
+            parameters:
+                -   name: id
+                    in: path
+                    required: true
+                    description: A unique integer value identifying this Transaction.
+                    schema:
+                        type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Transaction'
+                    application/xml:
+                        schema:
+                            $ref: '#/components/schemas/Transaction'
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Transaction'
+                        application/xml:
+                            schema:
+                                $ref: '#/components/schemas/Transaction'
+                    description: ''
+            tags:
+                - api
+        patch:
+            operationId: partialUpdateTransaction
+            description: ''
+            parameters:
+                -   name: id
+                    in: path
+                    required: true
+                    description: A unique integer value identifying this Transaction.
+                    schema:
+                        type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Transaction'
+                    application/xml:
+                        schema:
+                            $ref: '#/components/schemas/Transaction'
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Transaction'
+                        application/xml:
+                            schema:
+                                $ref: '#/components/schemas/Transaction'
+                    description: ''
+            tags:
+                - api
+    /api/transaction-category/:
+        get:
+            operationId: listCategorys
+            description: ''
+            parameters:
+                -   name: page
+                    required: false
+                    in: query
+                    description: A page number within the paginated result set.
+                    schema:
+                        type: integer
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    count:
+                                        type: integer
+                                        example: 123
+                                    next:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=4
+                                    previous:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=2
+                                    results:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Category'
+                        application/xml:
+                            schema:
+                                type: object
+                                properties:
+                                    count:
+                                        type: integer
+                                        example: 123
+                                    next:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=4
+                                    previous:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=2
+                                    results:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Category'
+                    description: ''
+            tags:
+                - api
+        post:
+            operationId: createCategory
+            description: ''
+            parameters: [ ]
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Category'
+                    application/xml:
+                        schema:
+                            $ref: '#/components/schemas/Category'
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Category'
+                        application/xml:
+                            schema:
+                                $ref: '#/components/schemas/Category'
+                    description: ''
+            tags:
+                - api
+    /api/transaction-category/{id}/:
+        get:
+            operationId: retrieveCategory
+            description: ''
+            parameters:
+                -   name: id
+                    in: path
+                    required: true
+                    description: A unique integer value identifying this Category.
+                    schema:
+                        type: string
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Category'
+                        application/xml:
+                            schema:
+                                $ref: '#/components/schemas/Category'
+                    description: ''
+            tags:
+                - api
+    /api/currency/:
+        get:
+            operationId: listCurrencys
+            description: ''
+            parameters:
+                -   name: page
+                    required: false
+                    in: query
+                    description: A page number within the paginated result set.
+                    schema:
+                        type: integer
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    count:
+                                        type: integer
+                                        example: 123
+                                    next:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=4
+                                    previous:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=2
+                                    results:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Currency'
+                        application/xml:
+                            schema:
+                                type: object
+                                properties:
+                                    count:
+                                        type: integer
+                                        example: 123
+                                    next:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=4
+                                    previous:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=2
+                                    results:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Currency'
+                    description: ''
+            tags:
+                - api
+        post:
+            operationId: createCurrency
+            description: ''
+            parameters: [ ]
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Currency'
+                    application/xml:
+                        schema:
+                            $ref: '#/components/schemas/Currency'
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Currency'
+                        application/xml:
+                            schema:
+                                $ref: '#/components/schemas/Currency'
+                    description: ''
+            tags:
+                - api
+    /api/currency/{id}/:
+        get:
+            operationId: retrieveCurrency
+            description: ''
+            parameters:
+                -   name: id
+                    in: path
+                    required: true
+                    description: A unique integer value identifying this Currency.
+                    schema:
+                        type: string
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Currency'
+                        application/xml:
+                            schema:
+                                $ref: '#/components/schemas/Currency'
+                    description: ''
+            tags:
+                - api
+    /api/balance-details/:
+        get:
+            operationId: listBalanceDetails
+            description: ''
+            parameters:
+                -   name: page
+                    required: false
+                    in: query
+                    description: A page number within the paginated result set.
+                    schema:
+                        type: integer
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    count:
+                                        type: integer
+                                        example: 123
+                                    next:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=4
+                                    previous:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=2
+                                    results:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/BalanceDetails'
+                        application/xml:
+                            schema:
+                                type: object
+                                properties:
+                                    count:
+                                        type: integer
+                                        example: 123
+                                    next:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=4
+                                    previous:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=2
+                                    results:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/BalanceDetails'
+                    description: ''
+            tags:
+                - api
+    /api/balance-details/{id}/:
+        get:
+            operationId: retrieveBalanceDetails
+            description: ''
+            parameters:
+                -   name: id
+                    in: path
+                    required: true
+                    description: A unique integer value identifying this Balance Details.
+                    schema:
+                        type: string
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BalanceDetails'
+                        application/xml:
+                            schema:
+                                $ref: '#/components/schemas/BalanceDetails'
+                    description: ''
+            tags:
+                - api
+    /api/cash-transaction/:
+        get:
+            operationId: listCashTransactions
+            description: ''
+            parameters:
+                -   name: page
+                    required: false
+                    in: query
+                    description: A page number within the paginated result set.
+                    schema:
+                        type: integer
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    count:
+                                        type: integer
+                                        example: 123
+                                    next:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=4
+                                    previous:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=2
+                                    results:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/CashTransaction'
+                        application/xml:
+                            schema:
+                                type: object
+                                properties:
+                                    count:
+                                        type: integer
+                                        example: 123
+                                    next:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=4
+                                    previous:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=2
+                                    results:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/CashTransaction'
+                    description: ''
+            tags:
+                - api
+        post:
+            operationId: createCashTransaction
+            description: ''
+            parameters: [ ]
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CashTransaction'
+                    application/xml:
+                        schema:
+                            $ref: '#/components/schemas/CashTransaction'
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CashTransaction'
+                        application/xml:
+                            schema:
+                                $ref: '#/components/schemas/CashTransaction'
+                    description: ''
+            tags:
+                - api
+    /api/cash-transaction/{id}/:
+        get:
+            operationId: retrieveCashTransaction
+            description: ''
+            parameters:
+                -   name: id
+                    in: path
+                    required: true
+                    description: A unique integer value identifying this Cash Transaction.
+                    schema:
+                        type: string
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CashTransaction'
+                        application/xml:
+                            schema:
+                                $ref: '#/components/schemas/CashTransaction'
+                    description: ''
+            tags:
+                - api
+    /api/member/:
+        get:
+            operationId: listMembers
+            description: ''
+            parameters:
+                -   name: page
+                    required: false
+                    in: query
+                    description: A page number within the paginated result set.
+                    schema:
+                        type: integer
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    count:
+                                        type: integer
+                                        example: 123
+                                    next:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=4
+                                    previous:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=2
+                                    results:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Member'
+                        application/xml:
+                            schema:
+                                type: object
+                                properties:
+                                    count:
+                                        type: integer
+                                        example: 123
+                                    next:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=4
+                                    previous:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=2
+                                    results:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Member'
+                    description: ''
+            tags:
+                - api
+        post:
+            operationId: createMember
+            description: ''
+            parameters: [ ]
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Member'
+                    application/xml:
+                        schema:
+                            $ref: '#/components/schemas/Member'
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Member'
+                        application/xml:
+                            schema:
+                                $ref: '#/components/schemas/Member'
+                    description: ''
+            tags:
+                - api
+    /api/member/{id}/:
+        get:
+            operationId: retrieveMember
+            description: ''
+            parameters:
+                -   name: id
+                    in: path
+                    required: true
+                    description: A unique integer value identifying this Member.
+                    schema:
+                        type: string
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Member'
+                        application/xml:
+                            schema:
+                                $ref: '#/components/schemas/Member'
+                    description: ''
+            tags:
+                - api
+        put:
+            operationId: updateMember
+            description: ''
+            parameters:
+                -   name: id
+                    in: path
+                    required: true
+                    description: A unique integer value identifying this Member.
+                    schema:
+                        type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Member'
+                    application/xml:
+                        schema:
+                            $ref: '#/components/schemas/Member'
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Member'
+                        application/xml:
+                            schema:
+                                $ref: '#/components/schemas/Member'
+                    description: ''
+            tags:
+                - api
+        patch:
+            operationId: partialUpdateMember
+            description: ''
+            parameters:
+                -   name: id
+                    in: path
+                    required: true
+                    description: A unique integer value identifying this Member.
+                    schema:
+                        type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Member'
+                    application/xml:
+                        schema:
+                            $ref: '#/components/schemas/Member'
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Member'
+                        application/xml:
+                            schema:
+                                $ref: '#/components/schemas/Member'
+                    description: ''
+            tags:
+                - api
+        delete:
+            operationId: destroyMember
+            description: ''
+            parameters:
+                -   name: id
+                    in: path
+                    required: true
+                    description: A unique integer value identifying this Member.
+                    schema:
+                        type: string
+            responses:
+                '204':
+                    description: ''
+            tags:
+                - api
+    /api/linked-member-transaction/:
+        get:
+            operationId: listLinkedTransactions
+            description: ''
+            parameters:
+                -   name: page
+                    required: false
+                    in: query
+                    description: A page number within the paginated result set.
+                    schema:
+                        type: integer
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    count:
+                                        type: integer
+                                        example: 123
+                                    next:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=4
+                                    previous:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=2
+                                    results:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/LinkedTransaction'
+                        application/xml:
+                            schema:
+                                type: object
+                                properties:
+                                    count:
+                                        type: integer
+                                        example: 123
+                                    next:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=4
+                                    previous:
+                                        type: string
+                                        nullable: true
+                                        format: uri
+                                        example: http://api.example.org/accounts/?page=2
+                                    results:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/LinkedTransaction'
+                    description: ''
+            tags:
+                - api
+        post:
+            operationId: createLinkedTransaction
+            description: ''
+            parameters: [ ]
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/LinkedTransaction'
+                    application/xml:
+                        schema:
+                            $ref: '#/components/schemas/LinkedTransaction'
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LinkedTransaction'
+                        application/xml:
+                            schema:
+                                $ref: '#/components/schemas/LinkedTransaction'
+                    description: ''
+            tags:
+                - api
+    /api/linked-member-transaction/{id}/:
+        get:
+            operationId: retrieveLinkedTransaction
+            description: ''
+            parameters:
+                -   name: id
+                    in: path
+                    required: true
+                    description: A unique integer value identifying this Linked Transaction.
+                    schema:
+                        type: string
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LinkedTransaction'
+                        application/xml:
+                            schema:
+                                $ref: '#/components/schemas/LinkedTransaction'
+                    description: ''
+            tags:
+                - api
+components:
+    schemas:
+        File:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    readOnly: true
+                available_balance_id:
+                    type: string
+                    nullable: true
+                final_closing_balance_id:
+                    type: string
+                final_opening_balance_id:
+                    type: string
+                forward_available_balance_id:
+                    type: string
+                    nullable: true
+                transaction_reference_nr:
+                    type: string
+                    maxLength: 16
+                    minLength: 16
+                related_reference_nr:
+                    type: string
+                    nullable: true
+                    maxLength: 16
+                    minLength: 16
+                account_identification:
+                    type: string
+                    maxLength: 35
+                statement_number:
+                    type: string
+                    pattern: ^\d+(?:\d+)*\z
+                    maxLength: 5
+                sequence_number:
+                    type: string
+                    nullable: true
+                    pattern: ^\d+(?:\d+)*\z
+                    maxLength: 5
+                registration_time:
+                    type: string
+                    format: date-time
+                    readOnly: true
+            required:
+                - final_closing_balance_id
+                - final_opening_balance_id
+                - transaction_reference_nr
+                - account_identification
+                - statement_number
+        Transaction:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    readOnly: true
+                bank_reference:
+                    type: string
+                    readOnly: true
+                file_id:
+                    type: string
+                    readOnly: true
+                balance_details_id:
+                    type: string
+                    readOnly: true
+                category_id:
+                    type: string
+                    nullable: true
+                custom_description:
+                    type: string
+                    nullable: true
+                customer_reference:
+                    type: string
+                    readOnly: true
+                    nullable: true
+                entry_date:
+                    type: string
+                    format: date
+                    readOnly: true
+                guessed_entry_date:
+                    type: string
+                    format: date
+                    readOnly: true
+                transaction_identification_code:
+                    type: string
+                    readOnly: true
+                transaction_details:
+                    type: string
+                    readOnly: true
+                extra_details:
+                    type: string
+                    readOnly: true
+                funds_code:
+                    type: string
+                    readOnly: true
+                    nullable: true
+        Category:
+            type: object
+            properties:
+                name:
+                    type: string
+                    maxLength: 30
+            required:
+                - name
+        Currency:
+            type: object
+            properties:
+                name:
+                    type: string
+                    maxLength: 3
+                    minLength: 3
+            required:
+                - name
+        BalanceDetails:
+            type: object
+            properties:
+                amount:
+                    type: number
+                currency_type_id:
+                    type: string
+                date:
+                    type: string
+                    format: date
+                status:
+                    enum:
+                        - C
+                        - D
+                    type: string
+                    nullable: true
+                    description: C = Credit, D = Debit
+            required:
+                - amount
+                - currency_type_id
+        CashTransaction:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    readOnly: true
+                source:
+                    type: string
+                    maxLength: 50
+                target:
+                    type: string
+                    maxLength: 50
+                amount:
+                    type: string
+                    format: decimal
+                    multipleOf: 1.0e-05
+                    maximum: 100000
+                    minimum: -100000
+                currency:
+                    enum:
+                        - EUR
+                    type: string
+            required:
+                - source
+                - target
+                - amount
+                - currency
+        Member:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    readOnly: true
+                first_name:
+                    type: string
+                    maxLength: 20
+                last_name:
+                    type: string
+                    maxLength: 20
+                email:
+                    type: string
+                    maxLength: 60
+            required:
+                - first_name
+                - last_name
+                - email
+        LinkedTransaction:
+            type: object
+            properties:
+                id:
+                    type: integer
+                    readOnly: true
+                member_id:
+                    type: string
+                transaction_bank_reference:
+                    type: string
+            required:
+                - member_id
+                - transaction_bank_reference

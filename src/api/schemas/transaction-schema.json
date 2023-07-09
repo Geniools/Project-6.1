@@ -1,0 +1,75 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "bank_reference": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 30
+      },
+      "file_id": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "balance_details_id": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "category_id": {
+        "type": "integer",
+        "nullable": true,
+        "minimum": 1
+      },
+      "custom_description": {
+        "type": "string",
+        "nullable": true,
+        "minLength": 1
+      },
+      "customer_reference": {
+        "type": "string",
+        "maxLength": 16,
+        "nullable": true,
+        "minLength": 1
+      },
+      "entry_date": {
+        "type": "string",
+        "format": "date"
+      },
+      "guessed_entry_date": {
+        "type": "string",
+        "format": "date"
+      },
+      "transaction_identification_code": {
+        "type": "string",
+        "maxLength": 4,
+        "minLength": 1
+      },
+      "transaction_details": {
+        "type": "string",
+        "minLength": 1
+      },
+      "extra_details": {
+        "type": "string",
+        "maxLength": 255,
+        "minLength": 1
+      },
+      "funds_code": {
+        "type": "string",
+        "maxLength": 1,
+        "nullable": true,
+        "minLength": 1
+      }
+    },
+    "required": [
+      "bank_reference",
+      "file_id",
+      "balance_details_id",
+      "transaction_identification_code",
+      "transaction_details",
+      "extra_details"
+    ]
+}

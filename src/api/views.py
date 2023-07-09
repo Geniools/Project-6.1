@@ -1,10 +1,10 @@
 from rest_framework import viewsets, permissions, mixins
 
-from main.permissions import IsTreasurerIsSuperuserOrReadOnly
-from base_app.serializers import TransactionSerializer, FileSerializer, CategorySerializer, CurrencySerializer, BalanceDetailsSerializer
-from base_app.models import Transaction, File, Category, Currency, BalanceDetails
+from api.permissions import IsTreasurerIsSuperuserOrReadOnly
+from api.serializers import *
 
 
+# ViewSets templates
 class CreateAndListOnlyViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     pass
 
@@ -13,6 +13,7 @@ class UpdateAndListOnlyViewSet(mixins.UpdateModelMixin, mixins.RetrieveModelMixi
     pass
 
 
+# Base app
 class TransactionViewSet(UpdateAndListOnlyViewSet):
     # API endpoint that allows transactions to be viewed or updated.
     queryset = Transaction.objects.all()
@@ -22,7 +23,7 @@ class TransactionViewSet(UpdateAndListOnlyViewSet):
 
 class FileViewSet(viewsets.ReadOnlyModelViewSet):
     # API endpoint that allows files (mt940 files) to be viewed
-    queryset = File.objects.all()
+    queryset = File.objects.all().order_by('-registration_time')
     serializer_class = FileSerializer
     permission_classes = [permissions.IsAuthenticated, IsTreasurerIsSuperuserOrReadOnly]
 
@@ -45,4 +46,25 @@ class BalanceDetailsViewSet(viewsets.ReadOnlyModelViewSet):
     # API endpoint that allows balance details to be viewed.
     queryset = BalanceDetails.objects.all()
     serializer_class = BalanceDetailsSerializer
+    permission_classes = [permissions.IsAuthenticated, IsTreasurerIsSuperuserOrReadOnly]
+
+
+# Cash module
+class CashTransactionViewSet(CreateAndListOnlyViewSet):
+    # API endpoint that allows users to be viewed or edited.
+    queryset = CashTransaction.objects.all()
+    serializer_class = CashTransactionSerializer
+    permission_classes = [permissions.IsAuthenticated, IsTreasurerIsSuperuserOrReadOnly]
+
+
+# Member module
+class MemberViewSet(viewsets.ModelViewSet):
+    queryset = Member.objects.all().order_by('pk')
+    serializer_class = MemberSerializer
+    permission_classes = [permissions.IsAuthenticated, IsTreasurerIsSuperuserOrReadOnly]
+
+
+class LinkedTransactionViewSet(CreateAndListOnlyViewSet):
+    queryset = LinkedTransaction.objects.all()
+    serializer_class = LinkedTransactionSerializer
     permission_classes = [permissions.IsAuthenticated, IsTreasurerIsSuperuserOrReadOnly]

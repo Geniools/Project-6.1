@@ -1,0 +1,64 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+       "id": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "available_balance_id": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "final_closing_balance_id": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "final_opening_balance_id": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "forward_available_balance_id": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "transaction_reference_nr": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 16
+          },
+          "related_reference_nr": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 16
+          },
+          "account_identification": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 35
+          },
+          "statement_number": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 5,
+            "pattern": "^[a-zA-Z]+$"
+          },
+          "sequence_number": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 5,
+            "pattern": "^[a-zA-Z]+$"
+          },
+          "registration_time": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "final_closing_balance_id",
+          "final_opening_balance_id",
+          "transaction_reference_nr",
+          "account_identification",
+          "statement_number"
+        ]
+}
