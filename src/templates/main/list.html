@@ -1,0 +1,47 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+
+{% block css %}
+	<link rel="stylesheet" href="{% static "style/list_style.css" %}" type="text/css">
+{% endblock %}
+
+{% block title %}
+	API Response
+{% endblock %}
+
+{% block body %}
+	<h1>Example of listing data from an API request</h1>
+	<h2>{{ format.upper }}</h2>
+
+	<table>
+		<thead>
+		<tr>
+			<th>ID</th>
+			<th>First Name</th>
+			<th>Last Name</th>
+			<th>Email</th>
+		</tr>
+		</thead>
+
+		<tbody>
+		{% for result in result.results %}
+			<tr>
+				<td>{{ result.id }}</td>
+				<td>{{ result.first_name }}</td>
+				<td>{{ result.last_name }}</td>
+				<td>{{ result.email }}</td>
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+
+	<div>
+		{% if previous_page %}
+			<a href="{{ previous_page }}">Previous</a>
+		{% endif %}
+		{% if next_page %}
+			<a href="{{ next_page }}">Next</a>
+		{% endif %}
+	</div>
+{% endblock %}

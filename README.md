@@ -17,7 +17,7 @@ Moreover, the application contains an API which can be used to retrieve data fro
 
 ### Prerequisites
 
-- python 3.9 or higher (application was tested with python 3.9)
+- python 3.9 or higher
 - pip
 - git
 - mysql (*or MariaDB*):
@@ -26,6 +26,45 @@ Moreover, the application contains an API which can be used to retrieve data fro
     - *mongodump* (optional for database backup)
 
 ### Installation
+
+#### Quick installation - Docker
+
+1. Make sure you have docker installed on your machine. If not, please refer to the following link:
+
+   https://docs.docker.com/get-docker/
+
+
+2. Clone the repository
+
+   ``git clone https://github.com/Geniools/Project-6.1.git``
+
+
+3. Copy the file ``example_local_settings.py`` from the root folder to ``src/sports_accounting/`` and
+   rename it to ``local_settings.py``. *Do not change the contents of the file if you use the default Docker
+   configuration*!
+
+
+4. Navigate to the Project root folder (default `Project_6.1`). Run the following command:
+
+   `` docker-compose build ``
+   . This will build the docker images.
+
+5. Run the following command:
+
+   `` docker-compose up ``
+   . This will start the containers (the database and the Django application).
+
+**Note!**: *if the above command fails, or the containers do not start as expected, **run the command again**.
+At first, the database takes longer to set up, so the application might not be able to connect to the database*.
+
+6. Navigate to ``http://localhost:8000`` in your browser to view the application. Refer to the **Usage** section for
+   more information.
+
+- a default superuser is created with the following credentials:
+    - username: admin
+    - password: admin
+
+#### Manual installation
 
 1. Clone the repository
 
@@ -43,14 +82,14 @@ Moreover, the application contains an API which can be used to retrieve data fro
 
       https://www.mongodb.com/atlas
 4. Navigate to ``Project6.1/src/sports_accounting/``, create a file named `local_settings.py`
-   and add the following lines:
+   and add the following lines (or copy the file ``example_local_settings.py`` and rename it to ``local_settings.py``
 
    ```
    # Copy this file to local_settings.py and fill in the required information.
    # The following file contains the local settings for the application.
    from pathlib import Path
    
-   # The base directory of the project (default is 'Project-6.1')
+   # The base directory of the project (default is 'src')
    BASE_DIR = Path(__file__).resolve().parent.parent
    
    # Whenever the site should be on debug or not (display errors, etc.)
@@ -92,6 +131,9 @@ Moreover, the application contains an API which can be used to retrieve data fro
    
    ```
 
+*Note:* If you use the ``example_local_settings.py`` file, you must change the SQL credentials to match your database
+configuration. Other settings can be left as they are.
+
 5. In your favourite terminal, navigate to the project folder containing the manage.py file (``Project6.1/src/``)
    and run the following commands:
 
@@ -102,15 +144,28 @@ Moreover, the application contains an API which can be used to retrieve data fro
    **! Note: In case any of the commands above fail, try running the command again by supplying the flag
    ``--skip-checks`` at the end.**
 
+
 6. Create a superuser (after running the command below fill in the required information when prompted)
 
-   `` python manage.py createsuperuser ``
+       `` python manage.py createsuperuser ``
+
+       OR
+
+       ``python manage.py createadmin`` (will create a default superuser with the username and password "admin"")
+
 
 7. Run the server and replace <PORT> with the port you want to run the server on (default is 8000 if not specified)
 
    `` python manage.py runserver <PORT> ``
 
+
 8. Navigate to ``http://localhost:<PORT>`` in your browser to view the application.
+
+### Extra
+
+1. To create a default database *view* run the following command:
+
+   `` python manage.py createdbview ``
 
 ## Usage
 
