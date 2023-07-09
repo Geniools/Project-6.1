@@ -167,6 +167,14 @@ configuration. Other settings can be left as they are.
 
    `` python manage.py createdbview ``
 
+2. To create a default database *trigger* run the following command:
+
+   `` python manage.py createdbtrigger ``
+
+3. To create a default database *stored procedure* run the following command:
+
+   `` python manage.py createdbprocedure ``
+
 ## Usage
 
 1. In order to log in to the admin panel of the application navigate to
