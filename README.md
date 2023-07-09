@@ -167,6 +167,14 @@ configuration. Other settings can be left as they are.
 
    `` python manage.py createdbview ``
 
+2. To create a default database *trigger* run the following command:
+
+   `` python manage.py createdbtrigger ``
+
+3. To create a default database *stored procedure* run the following command:
+
+   `` python manage.py createdbprocedure ``
+
 ## Usage
 
 1. In order to log in to the admin panel of the application navigate to
@@ -236,6 +244,24 @@ By default, the API can be viewed in the browser as a browsable API. This means 
 through the API and see the available endpoints and their functionality.
 
 - For more information about the permissions, please refer to the *User Roles* section.
+
+### Endpoints with Schemas
+
+The API also offers endpoints validated with pre-defined schemas. These include:
+
+- ``/api/member-schema-validation/``: Validate a member object
+- ``/api/transaction-schema-validation/``: Validate a transaction object
+- ``/api/balance-details-schema-validator/``: Validate a balance detail object
+- ``/api/cash-schema-validator/``: Validate a cash transaction object
+- ``/api/category-schema-validator/``: Validate a transaction category object
+- ``/api/currency-schema-validator/``: Validate a currency object
+- ``/api/file-schema-validator/``: Validate a file object
+
+All the endpoints accept POST and PUT requests in both JSON and XML format.
+
+**NOTE** Only the member endpoint (*/api/member-schema-validation/*) has an actual implementation for both requests.
+The other endpoints only return a response with a status code of 200 (OK), 201 (CREATE) or 400 (Bad Request) depending
+on the validity of the object returned from the schema validation.
 
 ## User Roles
 
