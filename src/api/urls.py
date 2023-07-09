@@ -3,6 +3,7 @@ from rest_framework import routers
 from rest_framework.schemas import get_schema_view
 
 from api import views
+from api import schema_views
 
 router = routers.DefaultRouter()
 # Base app
@@ -19,7 +20,7 @@ router.register(r'linked-member-transaction', views.LinkedTransactionViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('member-schema-validator/', views.MemberSchemaValidatorView.as_view(), name='member-schema-validator'),
+    path('member-schema-validator/', schema_views.MemberSchemaValidatorView.as_view(), name='member-schema-validator'),
     path(
         'schema/', get_schema_view(
             title="Sports Accounting API",

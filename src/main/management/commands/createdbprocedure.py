@@ -8,17 +8,20 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         with connection.cursor() as cursor:
             try:
+                # First drop the procedure if it exists
                 cursor.execute(
                     """
                         DROP PROCEDURE IF EXISTS `UpdateDetailsInLinkedTransactions`;
-
-                        DELIMITER ;;
-                        CREATE PROCEDURE `UpdateDetailsInLinkedTransactions`(
-                          IN member_id INT,
-                          IN new_category_id INT,
-                          IN new_description VARCHAR(255)
-                        )
-                        BEGIN
+                    """
+                )
+                # Then create the procedure
+                cursor.execute(
+                    """
+                        -- DELIMITER $$
+                        --
+                        -- Procedures
+                        --
+                        CREATE DEFINER=`root`@`%` PROCEDURE `UpdateDetailsInLinkedTransactions` (IN `member_id` INT, IN `new_category_id` INT, IN `new_description` VARCHAR(255)) BEGIN
                             DECLARE tr_id_var INT;
                             DECLARE category_id_var INT DEFAULT 0;
                             DECLARE description_var VARCHAR(255) DEFAULT NULL;
@@ -37,7 +40,8 @@ class Command(BaseCommand):
                             DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished = 1;
                             
                             
-                            SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+                            -- SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+                            SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
                             START TRANSACTION;
                                 -- Open the cursor
                                 OPEN curs;
@@ -68,8 +72,9 @@ class Command(BaseCommand):
                                 CLOSE curs;
                             COMMIT;
                          
-                        END ;;
-                        DELIMITER ;
+                        END
+                        -- $$
+                        -- DELIMITER ;
                     """
                 )
                 print("Stored Procedure created successfully")
