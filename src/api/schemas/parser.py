@@ -5,14 +5,16 @@ import io
 from jsonschema import Draft7Validator
 from lxml import etree
 
-from django.conf import settings
 from rest_framework.exceptions import ParseError
 from rest_framework.parsers import JSONParser
 from rest_framework_xml.parsers import XMLParser
 
+from . import SCHEMA_ROOT
+
 
 class XMLSchemaParser(XMLParser):
-    XML_SCHEMA = settings.BASE_DIR / "api/schemas/member-schema.xsd"
+    # This variable can be statically changed to point to a different schema - XMLSchemaParser.XML_SCHEMA = ...
+    XML_SCHEMA = SCHEMA_ROOT / "xsd/member-schema.xsd"
     
     def __init__(self):
         super().__init__()
@@ -45,7 +47,8 @@ class XMLSchemaParser(XMLParser):
 
 
 class JSONSchemaParser(JSONParser):
-    JSON_SCHEMA = settings.BASE_DIR / "api/schemas/member-schema.json"
+    # This variable can be statically changed to point to a different schema - JSONSchemaParser.JSON_SCHEMA = ...
+    JSON_SCHEMA = SCHEMA_ROOT / "json/member-schema.json"
     
     def __init__(self):
         super().__init__()
